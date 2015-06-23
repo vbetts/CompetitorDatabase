@@ -9,11 +9,24 @@ body { width: 600px;
 h1 { font-size: 16pt; }
 h2 { font-size: 14pt; }
 h4 { font-size: 12pt; }
-p { font-size: 10pt;
+p { font-size: 8pt;
     margin: 0 !important;
     padding: 5px 0px 0px 0px !important;
     word-wrap: break-word;
     }
+
+table { padding: 0 !important;
+        margin: 0 !important;
+        table-layout: fixed; }
+td th { border-right:1px solid #d3d3d3; }
+#specs { display: none; }
+#details { display: none; }
+#extraCol { display: none; }
+#name { font-size: 8pt !important; }
+.titles { font-size: 12pt !important; }
+pre { font-size: 8pt !important; }
+.hidecol { display: none; }
+
 
 #features { page-break-after: always; }
 #categories { page-break-after: always; }
