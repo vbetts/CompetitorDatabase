@@ -315,6 +315,7 @@ def details(request):
     competitor_selection = Competitor.objects.all()
     products = Product.objects.all()
     partners = False
+    message = ''
 
     if request.method == 'POST':
         form = ProductDetailsForm(request.POST, label_suffix=" ")
@@ -326,18 +327,49 @@ def details(request):
                 partners = True
             else:
                 partners = False
-
-
+        else:
+            message = 'There was an error with the form. Please try again.'
+            return render(request, 'NetsweeperCompetitors/details.html',{'form': form,
+                                                                         'competitors' : competitor_selection,
+                                                                         'products' : products,
+                                                                         'partners' : partners,
+                                                                         'message': message})
 
     return render(request, 'NetsweeperCompetitors/details.html',{'form': form,
                                                                  'competitors' : competitor_selection,
                                                                  'products' : products,
-                                                                 'partners' : partners})
+                                                                 'partners' : partners,
+                                                                 'message': message})
 
 def printpage(request):
     form = PrintPageForm(label_suffix=" ")
-    competitor_selection = Competitor.objects.get(name="Iboss Security")
-    products = Product.objects.filter(competitor__name= competitor_selection.name)
+    competitor_selection = ''
+    products = []
+    showCategories = False
+    showPartners = False
+    message = ''
+
+    if request.method == 'POST':
+        form = PrintPageForm(request.POST, label_suffix=" ")
+        if form.is_valid():
+            showCategories = form.cleaned_data.get('showCategories')
+            showPartners = form.cleaned_data.get('showPartners')
+            if form.cleaned_data.get('selection'):
+                companyObject = form.cleaned_data.get('selection')
+                competitor_selection = Competitor.objects.get(pk=companyObject.id)
+                products = Product.objects.filter(competitor__name= competitor_selection.name)
+        else:
+            message = 'There was an error with the form. Please try again.'
+            return render(request, 'NetsweeperCompetitors/printpage.html', {'form': form,
+                                                                            'competitor': competitor_selection,
+                                                                            'products': products,
+                                                                            'showCategories': showCategories,
+                                                                            'showPartners': showPartners,
+                                                                            'message': message})
+
     return render(request, 'NetsweeperCompetitors/printpage.html', {'form': form,
                                                                     'competitor': competitor_selection,
-                                                                    'products': products})
+                                                                    'products': products,
+                                                                    'showCategories': showCategories,
+                                                                    'showPartners': showPartners,
+                                                                    'message': message})

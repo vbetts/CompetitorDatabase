@@ -97,7 +97,7 @@ class ProductDetailsForm(forms.Form):
                                                widget=forms.SelectMultiple(attrs={'class': "form-control", 'id': "competitorName", 'required': "true"}))
 
 class PrintPageForm(forms.Form):
-    selection = forms.ModelMultipleChoiceField(queryset=Competitor.objects.all().order_by('name'),
+    selection = forms.ModelChoiceField(queryset=Competitor.objects.all().order_by('name'),
                                                label="Select a competitor to generate a datasheet",
                                                required=True,
                                                widget=forms.Select(attrs={'class': "form-control", 'required': "true", 'style': "width: 250px"}))
