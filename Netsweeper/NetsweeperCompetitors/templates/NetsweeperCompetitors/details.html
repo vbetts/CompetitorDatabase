@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+
+<html>
+
+{% extends "NetsweeperCompetitors/navbar.html" %}
+<head lang="en">
+    <meta charset="UTF-8">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Netsweeper Competitors</title>
+    {% block extrastyles %}
+    <style>
+        .text-left{ padding-left: 2%; }
+    </style>
+    {% endblock %}
+
+</head>
+<body>
+{% block body %}
+
+
+<h1 align="center">Netsweeper Competitors Data Analysis - Product Details</h1>
+
+<div class="selectForm" align="center">
+    <form method="POST" action="{% url 'details' %}">
+        {% csrf_token %}
+        <div class="col-md-2"></div>
+        <div class="col-md-4">
+            {{ form.selection.errors }}<br>
+            {{ form.selection.label_tag }}<br>
+            {{ form.selection }}<br>
+        </div>
+        <div class="col-md-4">
+            {{ form.infoSelect.errors }}<br>
+            {{ form.infoSelect.label_tag }}<br>
+            {{ form.infoSelect }}<br>
+        </div>
+        <div class="col-md-2"></div>
+        <div class="text-center col-md-12">
+            <button type="submit" class="btn btn-lg btn-primary" id="formButtons">Submit</button>
+            <a type="button" class="btn btn-lg btn-default" href="{% url 'details' %}" id="formButtons">Clear Selections</a>
+        </div>
+    </form>
+</div>
+
+
+{% if partners %}
+    {% for competitor in competitors %}
+        {% cycle '<div>' '<div>' '<div class="row">' %}
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h2 class="panel-title"><b>{{ competitor.name }} - Partnerships</b></h2>
+                </div><!--/panel header -->
+                <div class="panel-body">
+                    <table class="table">
+                        <tr>
+                            <th>Technology Partners</th>
+                            <th>Channel Partners</th>
+                            <th>OEM</th>
+                        </tr>
+                        <tr>
+                            <td>{{ competitor.technology_partners|safe }}</td>
+                            <td>{{ competitor.channel_partners|safe }}</td>
+                            <td>{{ competitor.oem_partners|safe }}</td>
+                        </tr>
+                    </table>
+                </div><!--/Panel body -->
+                <div class="panel-footer">
+
+                </div><!--/panel-footer -->
+            </div><!--/panel -->
+        </div><!--/col -->
+    </div><!--/row -->
+    {% endfor %}
+
+{% else %}
+    {% for competitor in competitors %}
+    {% for product in products %}
+    {% if product.competitor = competitor %}
+    {% cycle '<div>' '<div>' '<div class="row">' %}
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h2 class="panel-title"><b>{{ competitor.name }} - Product Details</b></h2>
+                </div><!--/panel header -->
+                <div class="panel-body">
+                    <table class="table">
+                        <tr>
+                            <td class="text-right">
+                                <b>Product Name: </b>
+                            </td>
+                            <td class="text-left">
+                                {% if product.name %}
+                                {{ product.name }}
+                                {% else %}
+                                No data
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-right">
+                                <b>Website: </b>
+                            </td>
+                            <td class="text-left">
+                                {% if competitor.url %}
+                                <p>
+                                    <a href="{{ competitor.url }}">{{ competitor.name }}</a>
+                                </p>
+                                {% else %}
+                                No data
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-right">
+                                <b>Supported platforms: </b>
+                            </td>
+                            <td class="text-left">
+                                {% if product.platform.all %}
+                                {% for platform in product.platform.all %}
+                                {{ platform.name }}
+                                {% endfor %}
+                                {% else %}
+                                No data
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-right">
+                                <b>Installation: </b>
+                            </td>
+                            <td class="text-left">
+                                {% if product.installation.all %}
+                                {% for installation in product.installation.all %}
+                                {{ installation.name }}
+                                {% endfor %}
+                                {% else %}
+                                No data
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-right">
+                                <b>URL Database: </b>
+                            </td>
+                            <td class="text-left">
+                                {% if product.urlDB %}
+                                {{ product.urlDB }}
+                                {% else %}
+                                No data
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-right">
+                                <b>Price: </b>
+                            </td>
+                            <td class="text-left">
+                                {% if product.price %}
+                                {{ product.price }}
+                                {% else %}
+                                No data
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-right">
+                                <b>Strengths: </b>
+                            </td>
+                            <td class="text-left">
+                                {% if competitor.strengths %}
+                                {{ competitor.strengths|safe }}
+                                {% else %}
+                                No data
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-right">
+                                <b>Weaknesses: </b>
+                            </td>
+                            <td class="text-left">
+                                {% if competitor.weaknesses %}
+                                {{ competitor.weaknesses|safe }}
+                                {% else %}
+                                No data
+                                {% endif %}
+                            </td>
+                        </tr>
+                    </table>
+                </div><!--/Panel body -->
+                <div class="panel-footer">
+                    {% if acquired or merged_with %}
+                    <table>
+                        <tr>
+                            <td class="text-right">
+                                <b>Acquired By: </b>
+                            </td>
+                            <td class="text-left">
+                                Company
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-right">
+                                <b>Merged With: </b>
+                            </td>
+                            <td class="text-left">
+                                Company
+                            </td>
+                        </tr>
+                    </table>
+                    {% endif %}
+                    <b>Last Updated: </b>{{ competitor.last_updated }}
+                </div><!--/panel-footer -->
+            </div><!--/panel -->
+        </div><!--/col -->
+    </div><!--/cycle -->
+    {% endif %}<!--if product=competitor -->
+    {% endfor %}<!--Product -->
+    {% endfor %}<!--Competitor -->
+{% endif %}<!--if partners -->
+
+{% endblock %}
+</body>
+
+{% block extrajs %}
+
+{% endblock %}
+</html>

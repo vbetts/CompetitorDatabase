@@ -1,0 +1,22 @@
+form { display: none; }
+img { display: none; }
+
+body { width: 600px;
+    margin-top: 0;
+    padding-top: 0; }
+
+
+h1 { font-size: 16pt; }
+h2 { font-size: 14pt; }
+h4 { font-size: 12pt; }
+p { font-size: 10pt;
+    margin: 0 !important;
+    padding: 5px 0px 0px 0px !important;
+    word-wrap: break-word;
+    }
+
+#features { page-break-after: always; }
+#categories { page-break-after: always; }
+
+pre { padding: 0 !important;
+        font-size: 10pt;}

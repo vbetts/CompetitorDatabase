@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+
+<html>
+
+{% extends "NetsweeperCompetitors/navbar.html" %}
+<head lang="en">
+    <meta charset="UTF-8">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Netsweeper Competitors</title>
+    {% block extrastyles %}
+    {% endblock %}
+
+</head>
+<body>
+{% block body %}
+
+<h1 align="center">Netsweeper Competitors Data Analysis</h1>
+<p class="small" align="center">Only companies with data in at least one field will be shown by default</p>
+<p class="bg-danger text-danger" align="center">{{ message }}</p>
+
+
+<div id="graphContainer" style="width:100%; height:400px;"></div>
+
+<div class="selectForm" align="center">
+    <form method="POST" action="{% url 'technology' %}">
+        {% csrf_token %}
+        {{ form.selection.errors }}<br>
+        {{ form.selection.label_tag }}<br>
+        {{ form.selection }}
+        {{ form.graphType.errors }}<br>
+        {{ form.graphType.label_tag }}<br>
+        {{ form.graphType }}<br>
+        <button type="submit" class="btn btn-lg btn-primary" id="formButtons">Submit</button>
+        <a type="button" class="btn btn-lg btn-default" href="{% url 'technology' %}" id="formButtons">Clear Selections</a>
+    </form>
+</div>
+
+
+{% endblock %}
+</body>
+
+{% block extrajs %}
+<script>
+    $(function () {
+    $('#graphContainer').highcharts({
+        chart: {
+            type: '{{ graph }}'
+        },
+        title: {
+            text: 'Competitor Technologies Breakdown'
+        },
+        xAxis: {
+            categories: [{% for item in technologies %}'{{item.name}}', {% endfor %}]
+        },
+        yAxis: {
+            title: {
+                text: 'Percentage'
+            }
+        },
+        plotOptions: {
+            {{ graph }}: {
+                dataLabels: {
+                    enabled: false
+                },
+                enableMouseTracking: true
+            }
+        },
+        series: [{
+            name: 'SaaS',
+            data: [{% for item in technologies %}{{item.saas}}, {% endfor %}]
+        }, {
+            name: 'Appliance',
+            data: [{% for item in technologies %}{{item.appliance}}, {% endfor %}]
+        }]
+    });
+});
+</script>
+
+
+{% endblock %}
+</html>

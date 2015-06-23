@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+
+<html>
+
+{% extends "NetsweeperCompetitors/navbar.html" %}
+<head lang="en">
+    <meta charset="UTF-8">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Netsweeper Competitors</title>
+    {% block extrastyles %}
+    {% endblock %}
+
+</head>
+<body>
+{% block body %}
+
+<h1 align="center">Netsweeper Competitors Data Analysis</h1>
+<p class="lead" align="center">Revenue Estimates</p>
+<p class="text-center small">Please note: Only competitors with valid data will be shown.<br>
+    A percentage value of '0' indicates incomplete data.<br>
+    If multiple estimates are present, the amount shown represents the average of all estimates.</p>
+
+<div class="selectForm" align="center">
+    <p class="bg-danger text-danger">{{ message }}</p>
+    <form method="POST" action="{% url 'revenue' %}">
+
+        {{ form.selection.errors }}<br>
+        {{ form.selection.label_tag }}<br>
+        {{ form.selection }}<br>
+        {{ form.graphType.errors }}<br>
+        {{ form.graphType.label_tag }}<br>
+        {{ form.graphType }}<br>
+        <button type="submit" class="btn btn-lg btn-primary" id="formButtons">Submit</button>
+        <a type="button" class="btn btn-lg btn-default" href="{% url 'revenue' %}" id="formButtons">Clear Selections</a>
+        {% csrf_token %}
+    </form>
+</div>
+
+{% for item in revenue %}
+<div id="{{ item.id }}" class="col-md-3"></div>
+{% endfor %}
+{% endblock %}
+</body>
+
+{% block extrajs %}
+{% for item in revenue %}
+<script>
+$(function () {
+    $('#{{ item.id }}').highcharts({
+        chart: {
+            type: '{{ graph }}'
+        },
+        title: {
+            text: '<b>{{ item.name }}</b>'
+        },
+        xAxis: {
+            labels: { enabled: false }
+        },
+        yAxis: {
+            title: {
+                text: 'Revenue ($millions)'
+            }
+        },
+        plotOptions: {
+            {{ graph }}: {
+                allowPointSelect: true,
+                dataLabels: {
+                        enabled: true
+                    },
+                    showInLegend: true
+            },
+        },
+                series: [{
+            name: 'Total Revenue',
+            data: [{{item.total_rev}},]
+        }, {% if item.filter_rev > 0 %}{
+            name: 'Revenue from Content Filtering',
+            data: [{{item.filter_rev}},]
+        }{% endif %}]
+    });
+});
+</script>
+{% endfor %}
+
+
+{% endblock %}
+</html>

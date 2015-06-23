@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+
+<html>
+
+{% extends "NetsweeperCompetitors/navbar.html" %}
+<head lang="en">
+    <meta charset="UTF-8">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Netsweeper Competitors</title>
+    {% block extrastyles %}
+    {% endblock %}
+</head>
+<body>
+{% block body %}
+
+<h1 align="center">Netsweeper Competitors Data Analysis</h1>
+<p class="lead" align="center">Select a category above to view and filter data visualizations<br><br>or</p>
+
+<div align="center">
+    <a href="{% url 'printpage'%}" type="button" class="btn btn-lg btn-primary">Print Competitor Datasheet</a>
+</div>
+
+
+{% endblock %}
+</body>
+
+{% block extrajs %}
+
+
+{% endblock %}
+</html>

@@ -1,0 +1,36 @@
+body {
+    margin: 3%;
+    }
+
+label {
+
+    }
+#competitorName, #categoryName, #featureName, #marketName {
+    width: 300px;
+    height: 300px;
+}
+
+#graphType {
+    width: 150px;
+}
+
+#formButtons {
+    margin-top: 2%;
+    margin-bottom: 2%;
+}
+
+a {margin-top: 2%;}
+
+pre {
+    font: inherit;
+    display: inherit;
+    border: none;
+    background: inherit;
+    white-space: pre-wrap;
+}
+
+img {
+    float: left;
+    height: 12%;
+    width: 12%;
+}

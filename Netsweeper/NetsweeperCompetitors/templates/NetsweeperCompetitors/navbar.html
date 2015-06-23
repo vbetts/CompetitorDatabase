@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+{% load admin_urls %}
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% load staticfiles %}
+    {% block styles %}
+    <link href="{% static 'NetsweeperCompetitors/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'NetsweeperCompetitors/css/navbar-fixed-top.css' %}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+    <link href="{% static 'NetsweeperCompetitors/css/bootstrap.css' %}" rel="stylesheet">
+    <link href="{% static 'NetsweeperCompetitors/css/custom.css' %}" rel="stylesheet">
+    {% endblock %}
+    {% block extrastyles %}{% endblock %}
+</head>
+<body>
+{% block navbar %}
+<nav class="navbar navbar-default navbar-fixed-top navbar-inverse">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="{% url 'index' %}">Netsweeper Competitors</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Graphs <span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="{% url 'globalmarket' %}">Global Market</a></li>
+                        <li><a href="{% url 'verticalmarket' %}">Vertical Market</a></li>
+                        <!--<li><a href="{% url 'revenue' %}">Revenue</a></li>-->
+                        <li><a href="{% url 'channels' %}">Channels</a></li>
+                        <li><a href="{% url 'technology' %}">Technologies</a></li>
+                    </ul>
+                </li>
+                <li><a href="{% url 'features' %}">Features</a></li>
+                <li><a href="{% url 'categories' %}">Categories</a></li>
+                <li><a href="{% url 'details' %}">Product Details</a></li>
+                <li><a href="{% url 'printpage' %}">Competitor Datasheet</a></li>
+                <li><a href="{% url 'admin:index' %}">Admin Site</a></li>
+            </ul>
+        </div>
+
+        <!--/.nav-collapse -->
+    </div>
+</nav>
+{% endblock %}
+{% block logo %}
+<img src="{% static 'NetsweeperCompetitors/ns_logo.jpg' %}"><br>
+{% endblock %}
+
+{% block body %}
+
+
+{% endblock %}
+
+{% block footer %}{% endblock %}
+{% block js %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+<script src="{% static 'NetsweeperCompetitors/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'NetsweeperCompetitors/js/bootstrap.js' %}"></script>
+<script src="{% static 'NetsweeperCompetitors/js/npm.js' %}"></script>
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script src="{% static 'NetsweeperCompetitors/js/ie10-viewport-bug-workaround.js' %}"></script>
+<script src="http://code.highcharts.com/highcharts.js"></script>
+{% endblock %}
+
+{% block extrajs %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+
+{% extends "NetsweeperCompetitors/navbar.html" %}
+{% load dictionary_lookup %}
+{% load set_var %}
+
+<head lang="en">
+    <meta charset="UTF-8">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Netsweeper Competitors</title>
+    {% block extrastyles %}
+    {% endblock %}
+
+</head>
+<body>
+{% block body %}
+
+<h1 align="center">Netsweeper Competitors Data Analysis - Categories</h1>
+<p class="bg-danger text-danger" align="center">{{ message }}</p>
+<p class="text-center small">Please note: Only competitors with valid data will be shown.</p>
+
+<div class="selectForm" align="center">
+    <form method="POST" action="{% url 'categories' %}">
+        {% csrf_token %}
+        <div class="col-md-3"></div>
+        <div class="col-md-3">
+            {{ form.selection.errors }}<br>
+            {{ form.selection.label_tag }}<br>
+            {{ form.selection }}<br>
+        </div>
+
+        <div class="col-md-3">
+            {{ form.categorySelect.errors }}<br>
+            {{ form.categorySelect.label_tag }}<br>
+            {{ form.categorySelect }}<br>
+        </div>
+        <div class="col-md-3"> </div>
+        <div class="text-center col-md-12">
+            <button type="submit" class="btn btn-lg btn-primary" id="formButtons">Submit</button>
+            <a type="button" class="btn btn-lg btn-default" href="{% url 'categories' %}" id="formButtons">Clear Selections</a>
+        </div>
+
+    </form>
+</div>
+
+{% if categories %}
+    <table class="table table-striped">
+        <tr>
+            <th></th>
+            {% for key in categories %} <!--First -->
+
+            <th class="text-center" colspan="2" style="border-left:1px solid #d3d3d3">
+
+                <h4>{{ key }}</h4>
+
+            </th>
+            {% endfor %}<!--First -->
+        </tr>
+
+
+        <tr>
+            <th class="text-right">
+                <h4>Category</h4>
+            </th>
+            {% for key in categories %}
+
+            <th class="text-center" id="supported" style="border-left:1px solid #d3d3d3">
+                <h4>Supported</h4>
+            </th>
+            <th id="details" style="border-left:1px solid #d3d3d3">
+                <h4>Sub-Categories</h4>
+            </th>
+            {% endfor %}
+        </tr>
+
+        {% for name in category_names %} <!-- Second -->
+
+            <tr>
+                <th class="text-right">
+                    {{ name.name }}
+                </th>
+                {% for key in categories %}
+                <td class="text-center" style="border-left:1px solid #d3d3d3">
+                    {% for item in categories|get_item:key %}
+                        {% if item.category__name == name.name %}
+                            <span class="glyphicon glyphicon-ok" aria-hidden="true" style="color:#32CD32"></span>
+                        {% endif %}<!--First If -->
+                    {% endfor %}<!-- Fourth -->
+                </td>
+
+                <td id="specs" style="border-left:1px solid #d3d3d3">
+                    {% for item in categories|get_item:key %}<!--Fifth -->
+                        {% if item.category__name == name.name %} <!--Second If -->
+                            {% if item.details %}<!--Third If -->
+                                <pre>{{ item.details }}</pre>
+                            {% endif %}<!--Third If -->
+                        {% endif %}<!--Second If -->
+                    {% endfor %}<!--Fifth -->
+                </td>
+                {% endfor %}<!-- Third -->
+            </tr>
+        {% endfor %}<!-- Second -->
+    </table>
+{% endif %}
+{% endblock %}
+</body>
+
+{% block extrajs %}
+{% endblock %}
+
+</html>
