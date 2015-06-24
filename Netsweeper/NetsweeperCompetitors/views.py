@@ -207,7 +207,7 @@ def revenue(request):
             graphType = form.cleaned_data.get('graphType')
             if form.cleaned_data.get('selection').count() != 0:
                 companyObject = form.cleaned_data.get('selection')
-                revenue = Competitor.objects.filter(pk__in= companyObject).values('id', 'name').annotate(total_rev=Avg('revenue_estimate__totalRevenue'), filter_rev=Avg('revenue_estimate__filteringRevenue')).order_by('name')
+                revenue = Competitor.objects.filter(pk__in= companyObject).values('id', 'name').annotate(total_rev=Avg('revenueestimate__totalRevenue'), filter_rev=Avg('revenueestimate__filteringRevenue')).order_by('name')
                 for item in revenue:
                     if item['total_rev']== None and item['filter_rev'] == None:
                         item['total_rev'] = 0
