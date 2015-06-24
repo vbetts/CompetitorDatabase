@@ -187,7 +187,7 @@
 
         {% for item in competitor.competitorcategories_set.all %}
         <div class="col-xs-4">
-            <p><b>{{ item.category.name}}</b></p><pre>{{ item.details }}</pre>
+            <p><b>{{ item.category.name}}</b></p><p>{{ item.details|safe }}</p>
         </div>
         {% empty %}
             <p>No category data</p>

@@ -1,6 +1,11 @@
 from django.contrib import admin
+from django.contrib.admin import AdminSite
 
 from .models import Competitor, Category, AdditionalInfo, Review, Platform, Installation, RevenueEstimate, Product, Feature, TargetMarket, RevenueDataSource, GlobalMarket, VerticalMarket
+
+class MyAdminSite(AdminSite):
+    site_header='Netsweeper Competitors Administration'
+
 
 class RevenueEstimateInline(admin.TabularInline):
     model = RevenueEstimate
@@ -9,24 +14,33 @@ class RevenueEstimateInline(admin.TabularInline):
 class FeaturesInline(admin.TabularInline):
     model = Competitor.features.through
     extra = 1
+
 class CategoriesInline(admin.TabularInline):
     model = Competitor.categories.through
     extra=1
+
 class GlobalMarketInline(admin.TabularInline):
     model = Competitor.globalMarket.through
     extra = 1
+
 class VerticalMarketInline(admin.TabularInline):
     model = Competitor.verticalMarket.through
     extra = 1
+
 class TargetMarketInline(admin.TabularInline):
     model = Competitor.target_Market.through
     extra = 1
+    verbose_name = "Target Market"
+    verbose_name_plural = "Target Markets"
+
 class ProductInline(admin.StackedInline):
     model = Product
     extra = 1
+
 class ReviewInline(admin.TabularInline):
     model = Review
     extra = 1
+
 class FileInline(admin.TabularInline):
     model = AdditionalInfo
     extra = 1
