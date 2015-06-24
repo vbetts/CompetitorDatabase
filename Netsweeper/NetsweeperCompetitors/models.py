@@ -16,6 +16,8 @@ class Feature(models.Model):
 
 class Category(models.Model):
     name = models.CharField(max_length=255, blank=False)
+    class Meta:
+        verbose_name_plural="Categories"
     def __str__(self):
         return self.name
 
@@ -31,12 +33,15 @@ class VerticalMarket(models.Model):
 
 class TargetMarket(models.Model):
     name=models.CharField(max_length=255, blank=False)
+    class Meta:
+        verbose_name_plural="Target Market"
+        verbose_name="Target Market"
     def __str__(self):
         return self.name
 
 class Competitor(models.Model):
-    dataSource = models.ManyToManyField(CompetitorDataSource)
-    target_Market = models.ManyToManyField(TargetMarket)
+    dataSource = models.ManyToManyField(CompetitorDataSource, verbose_name="Competitor Data Sources")
+    target_Market = models.ManyToManyField(TargetMarket, verbose_name="Target Markets")
     features = models.ManyToManyField(Feature, through='CompanyFeatures')
     categories = models.ManyToManyField(Category, through='CompetitorCategories')
     globalMarket = models.ManyToManyField(GlobalMarket, through='GlobalMarketShare')
@@ -105,6 +110,8 @@ class CompetitorCategories(models.Model):
     competitor = models.ForeignKey(Competitor)
     category = models.ForeignKey(Category)
     details = models.TextField("Sub-Categories", blank=True, null=True, max_length=3000)
+    class Meta:
+        verbose_name_plural="Competitor Filtering Categories"
 
 class Platform(models.Model):
     name = models.CharField(max_length=255)
@@ -149,6 +156,8 @@ class RevenueDataSource(models.Model):
 class AdditionalInfo(models.Model):
     competitor = models.ForeignKey(Competitor)
     document = models.FileField("Add extra documentation")
+    class Meta:
+        verbose_name_plural="Additional Info"
 
 class RevenueEstimate(models.Model):
     competitor = models.ForeignKey(Competitor)
@@ -172,6 +181,8 @@ class CompanyFeatures(models.Model):
     competitor = models.ForeignKey(Competitor)
     feature = models.ForeignKey(Feature)
     featureSpecs = models.TextField("Technical Details", blank=True, null=True, max_length=3000)
+    class Meta:
+        verbose_name_plural="Product Features"
 
 class GlobalMarketShare(models.Model):
     competitor = models.ForeignKey(Competitor)

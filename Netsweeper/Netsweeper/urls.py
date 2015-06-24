@@ -16,6 +16,8 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 
+admin.site.site_header='Netsweeper Competitors Database Admin'
+admin.site.site_title='Netsweeper Competitors'
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls), name='admin'),

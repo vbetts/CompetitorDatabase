@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+
 import configparser
 
 config = configparser.ConfigParser()
@@ -44,7 +45,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'NetsweeperCompetitors',
     'bootstrap3'
-    )
+)
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -70,10 +71,10 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                ],
-            },
+            ],
         },
-    ]
+    },
+]
 
 WSGI_APPLICATION = 'Netsweeper.wsgi.application'
 
@@ -91,9 +92,9 @@ DATABASES = {
         'PORT': config.get('database', 'port'),
         'OPTIONS': {'autocommit': True,
 
-        #'ENGINE': 'django.db.backends.sqlite3',
-        #'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        },
+                    #'ENGINE': 'django.db.backends.sqlite3',
+                    #'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+                    },
     }
 }
 
@@ -118,3 +119,4 @@ USE_TZ = True
 
 #STATIC_ROOT='/var/www/static'
 STATIC_URL = '/static/'
+

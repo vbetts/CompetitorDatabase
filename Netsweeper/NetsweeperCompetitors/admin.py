@@ -1,13 +1,11 @@
 from django.contrib import admin
 
-from .models import Competitor, Category, AdditionalInfo, Review, Platform, Installation, RevenueEstimate, Product, Feature, TargetMarket, CompetitorDataSource, RevenueDataSource, GlobalMarket, VerticalMarket
+from .models import Competitor, Category, AdditionalInfo, Review, Platform, Installation, RevenueEstimate, Product, Feature, TargetMarket, RevenueDataSource, GlobalMarket, VerticalMarket
 
-class CompanyDataSourceInline(admin.TabularInline):
-    model = Competitor.dataSource.through
-    extra = 1
 class RevenueEstimateInline(admin.TabularInline):
     model = RevenueEstimate
     extra = 1
+
 class FeaturesInline(admin.TabularInline):
     model = Competitor.features.through
     extra = 1
@@ -33,6 +31,75 @@ class FileInline(admin.TabularInline):
     model = AdditionalInfo
     extra = 1
 
+class RevenueEstimateAdmin(admin.ModelAdmin):
+    def get_model_perms(self, request):
+        """
+        Return empty perms dict thus hiding the model from admin index.
+        """
+        return {}
+
+class RevenueDataAdmin(admin.ModelAdmin):
+    def get_model_perms(self, request):
+        """
+        Return empty perms dict thus hiding the model from admin index.
+        """
+        return {}
+
+class VerticalMarketAdmin(admin.ModelAdmin):
+    def get_model_perms(self, request):
+        """
+        Return empty perms dict thus hiding the model from admin index.
+        """
+        return {}
+class GlobalMarketAdmin(admin.ModelAdmin):
+    def get_model_perms(self, request):
+        """
+        Return empty perms dict thus hiding the model from admin index.
+        """
+        return {}
+class FeatureAdmin(admin.ModelAdmin):
+    def get_model_perms(self, request):
+        """
+        Return empty perms dict thus hiding the model from admin index.
+        """
+        return {}
+class TargetMarketAdmin(admin.ModelAdmin):
+    def get_model_perms(self, request):
+        """
+        Return empty perms dict thus hiding the model from admin index.
+        """
+        return {}
+class ProductAdmin(admin.ModelAdmin):
+    def get_model_perms(self, request):
+        """
+        Return empty perms dict thus hiding the model from admin index.
+        """
+        return {}
+class ReviewAdmin(admin.ModelAdmin):
+    def get_model_perms(self, request):
+        """
+        Return empty perms dict thus hiding the model from admin index.
+        """
+        return {}
+class PlatformAdmin(admin.ModelAdmin):
+    def get_model_perms(self, request):
+        """
+        Return empty perms dict thus hiding the model from admin index.
+        """
+        return {}
+class InstallationAdmin(admin.ModelAdmin):
+    def get_model_perms(self, request):
+        """
+        Return empty perms dict thus hiding the model from admin index.
+        """
+        return {}
+class CategoryAdmin(admin.ModelAdmin):
+    def get_model_perms(self, request):
+        """
+        Return empty perms dict thus hiding the model from admin index.
+        """
+        return {}
+
 class CompetitorAdmin(admin.ModelAdmin):
     fieldsets = [
         ('General Company Information', {'fields' : ['name',
@@ -43,16 +110,21 @@ class CompetitorAdmin(admin.ModelAdmin):
                                                      'focus',
                                                      'url',
                                                      'number_of_categories',
-                                                     'notes']}),
+                                                     'notes'],
+                                         'classes' : ('suit-tab', 'suit-tab-general',)}),
         ('Partnerships', {'fields' : ['channel_partners',
                                       'technology_partners',
-                                      'oem_partners']}),
+                                      'oem_partners'],
+                          'classes' : ('suit-tab', 'suit-tab-partner',)}),
         ('Channels', {'fields' : ['direct',
-                                  'partners']}),
+                                  'partners'],
+                      'classes' : ('suit-tab', 'suit-tab-channel',)}),
         ('Technologies', {'fields' : ['saas',
-                                      'appliance']}),
+                                      'appliance'],
+                          'classes' : ('suit-tab', 'suit-tab-technologies',)}),
         ('SWOT Analysis', {'fields' : ['strengths',
-                                       'weaknesses']})
+                                       'weaknesses'],
+                           'classes' : ('suit-tab', 'suit-tab-swot',)})
     ]
     inlines = [
         GlobalMarketInline,
@@ -63,7 +135,6 @@ class CompetitorAdmin(admin.ModelAdmin):
         ProductInline,
         ReviewInline,
         RevenueEstimateInline,
-        CompanyDataSourceInline,
         FileInline,
         ]
     exclude = ('dataSource',)
@@ -77,16 +148,16 @@ class CompetitorAdmin(admin.ModelAdmin):
                      'strengths',
                      'weaknesses']
 
+
 admin.site.register(Competitor, CompetitorAdmin)
-admin.site.register(RevenueEstimate)
-admin.site.register(RevenueDataSource)
-admin.site.register(VerticalMarket)
-admin.site.register(GlobalMarket)
-admin.site.register(Feature)
-admin.site.register(CompetitorDataSource)
-admin.site.register(TargetMarket)
-admin.site.register(Product)
-admin.site.register(Review)
-admin.site.register(Platform)
-admin.site.register(Installation)
-admin.site.register(Category)
+admin.site.register(RevenueEstimate, RevenueEstimateAdmin)
+admin.site.register(RevenueDataSource, RevenueDataAdmin)
+admin.site.register(VerticalMarket, VerticalMarketAdmin)
+admin.site.register(GlobalMarket, GlobalMarketAdmin)
+admin.site.register(Feature, FeatureAdmin)
+admin.site.register(TargetMarket, TargetMarketAdmin)
+admin.site.register(Product, ProductAdmin)
+admin.site.register(Review, ReviewAdmin)
+admin.site.register(Platform, PlatformAdmin)
+admin.site.register(Installation, InstallationAdmin)
+admin.site.register(Category, CategoryAdmin)
