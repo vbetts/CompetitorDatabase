@@ -103,3 +103,13 @@ class PrintPageForm(forms.Form):
                                                widget=forms.Select(attrs={'class': "form-control", 'required': "true", 'style': "width: 250px"}))
     showCategories = forms.BooleanField(label="Show Competitor Web Filtering Categories", required=False)
     showPartners = forms.BooleanField(label="Show Competitor Partnerships", required=False)
+
+class LoginForm(forms.Form):
+    username = forms.CharField(max_length=50,
+                               label='Username',
+                               required=True,
+                               widget=forms.TextInput(attrs={'class': "form-control", 'required': "true", 'style': "width: 30%"}))
+    password = forms.CharField(max_length=50,
+                               label='Password',
+                               required=True,
+                               widget=forms.PasswordInput(attrs={'class': "form-control", 'required': "true", 'style': "width: 30%"}))

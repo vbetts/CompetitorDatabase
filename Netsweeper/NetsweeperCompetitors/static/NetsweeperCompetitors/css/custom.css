@@ -38,3 +38,5 @@ img {
 table {
     table-layout: fixed;
 }
+
+input { text-align: center; }

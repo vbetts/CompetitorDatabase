@@ -28,6 +28,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = config.get('key', 'secret_key')
 
+LOGIN_REDIRECT_URL = '/'
+LOGIN_URL = '/login/'
+LOGOUT_URL = '/login/'
+
+
 # SECURITY WARNING: don't run with debug turned on in production!
 #DEBUG = False
 #ALLOWED_HOSTS = ['216.171.102.153']

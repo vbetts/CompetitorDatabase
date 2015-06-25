@@ -27,9 +27,11 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
+            {% if user.is_authenticated %}
             <a class="navbar-brand" href="{% url 'index' %}">Netsweeper Competitors</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
+
             <ul class="nav navbar-nav">
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Graphs <span class="caret"></span></a>
@@ -46,7 +48,19 @@
                 <li><a href="{% url 'details' %}">Product Details</a></li>
                 <li><a href="{% url 'printpage' %}">Competitor Datasheet</a></li>
                 <li><a href="{% url 'admin:index' %}">Admin Site</a></li>
+                <li></li>
             </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Hello {{ user }}!<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{% url 'logout' %}">Logout</a></li>
+                        <li><small style="padding: 8px">Last Login:</small> <br><small style="padding: 8px">{% if user.last_login %} {{ user.last_login }} {% else %} This is your first login. Welcome! {% endif %}</small></li>
+                    </ul>
+                </li>
+            </ul>
+
+            {% endif %}
         </div>
 
         <!--/.nav-collapse -->

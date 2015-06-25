@@ -1,12 +1,44 @@
-from django.shortcuts import render
+from django.shortcuts import render, HttpResponseRedirect
 from django.db.models import Avg
 from .models import Competitor, GlobalMarketShare, GlobalMarket, Product, CompetitorCategories, Category, \
     VerticalMarket, VerticalMarketShare, CompanyFeatures, Feature
 from .forms import SelectCompetitor, CategoriesForm, FeaturesForm, VerticalMarketForm, GlobalMarketForm, \
-    ProductDetailsForm, PrintPageForm
+    ProductDetailsForm, PrintPageForm, LoginForm
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+import Netsweeper.settings as settings
 
+@login_required
 def index(request):
     return render(request, 'NetsweeperCompetitors/index.html')
+
+
+
+def login_view(request):
+    form = LoginForm(label_suffix='')
+
+    message = ''
+
+    if request.method == 'POST':
+        form = LoginForm(request.POST, label_suffix='')
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                if user.is_active:
+                    login(request, user)
+                    return HttpResponseRedirect(settings.LOGIN_REDIRECT_URL)
+                else:
+                    message = 'This account has been disabled.'
+            else:
+                message = 'The username and password are incorrect'
+    return render(request, 'NetsweeperCompetitors/login.html', {'form' : form,
+                                                                'message' : message})
+
+def logout_view(request):
+    logout(request)
+    return HttpResponseRedirect('/login/')
 
 #Build market share data
 def build_market_share(shares, competitors):
@@ -50,6 +82,7 @@ def build_verticalmarket_display(competitors, marketObject=False):
 
 ########################################################################################################################
 #Filter results on the global market template
+@login_required
 def globalmarket(request):
     form = GlobalMarketForm(label_suffix=" ")
     graphType = 'column'
@@ -89,6 +122,7 @@ def globalmarket(request):
                                                                        'market' : market_display})
 ########################################################################################################################
 #Data for vertical markets
+@login_required
 def verticalmarket(request):
     form = VerticalMarketForm(label_suffix=" ")
     graphType = 'column'
@@ -131,6 +165,7 @@ def verticalmarket(request):
 
 ########################################################################################################################
 #View and filter results on the channels template
+@login_required
 def channels(request):
     channelValues = Competitor.objects.all().order_by('name').values('id', 'name', 'direct', 'partners')\
         .exclude(direct=0, partners=0)
@@ -164,6 +199,7 @@ def channels(request):
 
 ########################################################################################################################
 #View and filter results on the technology template
+@login_required
 def technology(request):
     technologies = Competitor.objects.all().order_by('name').values('id', 'name', 'appliance', 'saas').exclude(appliance=0, saas=0)
     form = SelectCompetitor(label_suffix=" ")
@@ -194,6 +230,7 @@ def technology(request):
 
 ########################################################################################################################
 #View and filter results on the revenue template
+@login_required
 def revenue(request):
     revenue = Competitor.objects.values('id', 'name').annotate(total_rev=Avg('revenueestimate__totalRevenue'), filter_rev=Avg('revenueestimate__filteringRevenue')).exclude(total_rev__icontains= 'None', filter_rev__icontains='None').order_by('name')
     form = SelectCompetitor(label_suffix=" ")
@@ -229,6 +266,7 @@ def revenue(request):
                                                                   'message': message})
 ########################################################################################################################
 #View and filter reults on the features template
+@login_required
 def features(request):
     form = FeaturesForm(label_suffix=" ")
     companyIds = []
@@ -271,6 +309,7 @@ def features(request):
 
 ########################################################################################################################
 #View and filter esults on the categories template
+@login_required
 def categories(request):
     form = CategoriesForm(label_suffix=" ")
     companyIds = []
@@ -310,6 +349,7 @@ def categories(request):
                                                                      'category_names': category_names,
                                                                      'competitor': competitor_selection})
 
+@login_required
 def details(request):
     form = ProductDetailsForm(label_suffix=" ")
     competitor_selection = Competitor.objects.all()
@@ -341,6 +381,7 @@ def details(request):
                                                                  'partners' : partners,
                                                                  'message': message})
 
+@login_required
 def printpage(request):
     form = PrintPageForm(label_suffix=" ")
     competitor_selection = ''

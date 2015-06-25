@@ -14,9 +14,26 @@
 </head>
 <body>
 {% block body %}
-
-
-
+<div align="center">
+    <p class="bg-danger text-danger">{{ message }}</p>
+    <form method="POST" action="{% url 'login' %}">
+        {% csrf_token %}
+        <div class="form-group">
+            {{ form.username.errors }}<br>
+            {{ form.username.label_tag }}<br>
+            {{ form.username }}<br>
+        </div>
+        <div class="form-group">
+            {{ form.password.errors }}<br>
+            {{ form.password.label_tag }}<br>
+            {{ form.password }}
+        </div>
+        <div class="text-center col-md-12">
+            <button type="submit" class="btn btn-lg btn-primary" id="formButtons">Login</button>
+        </div>
+    </form>
+    <small><a href="#">Forgot your password?</a></small>
+</div>
 
 {% endblock %}
 </body>
