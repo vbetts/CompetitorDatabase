@@ -113,12 +113,6 @@ class CategoryAdmin(admin.ModelAdmin):
         Return empty perms dict thus hiding the model from admin index.
         """
         return {}
-class ResourceCategoryAdmin(admin.ModelAdmin):
-    def get_model_perms(self, request):
-        """
-        Return empty perms dict thus hiding the model from admin index.
-        """
-        return {}
 
 class CompetitorAdmin(admin.ModelAdmin):
     fieldsets = [
@@ -184,5 +178,5 @@ admin.site.register(Review, ReviewAdmin)
 admin.site.register(Platform, PlatformAdmin)
 admin.site.register(Installation, InstallationAdmin)
 admin.site.register(Category, CategoryAdmin)
-admin.site.register(ResourceCategory, ResourceCategoryAdmin)
+admin.site.register(ResourceCategory)
 admin.site.register(ResourceFile, ResourceFileAdmin)
