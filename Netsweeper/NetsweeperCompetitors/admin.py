@@ -1,11 +1,11 @@
 from django.contrib import admin
 from django.contrib.admin import AdminSite
 
-from .models import Competitor, Category, AdditionalInfo, Review, Platform, Installation, RevenueEstimate, Product, Feature, TargetMarket, RevenueDataSource, GlobalMarket, VerticalMarket
+from .models import Competitor, Category, ResourceCategory, ResourceFile, AdditionalInfo, Review, Platform, Installation, \
+    RevenueEstimate, Product, Feature, TargetMarket, RevenueDataSource, GlobalMarket, VerticalMarket
 
 class MyAdminSite(AdminSite):
     site_header='Netsweeper Competitors Administration'
-
 
 class RevenueEstimateInline(admin.TabularInline):
     model = RevenueEstimate
@@ -113,6 +113,12 @@ class CategoryAdmin(admin.ModelAdmin):
         Return empty perms dict thus hiding the model from admin index.
         """
         return {}
+class ResourceCategoryAdmin(admin.ModelAdmin):
+    def get_model_perms(self, request):
+        """
+        Return empty perms dict thus hiding the model from admin index.
+        """
+        return {}
 
 class CompetitorAdmin(admin.ModelAdmin):
     fieldsets = [
@@ -125,20 +131,20 @@ class CompetitorAdmin(admin.ModelAdmin):
                                                      'url',
                                                      'number_of_categories',
                                                      'notes'],
-                                         'classes' : ('suit-tab', 'suit-tab-general',)}),
+                                         }),
         ('Partnerships', {'fields' : ['channel_partners',
                                       'technology_partners',
                                       'oem_partners'],
-                          'classes' : ('suit-tab', 'suit-tab-partner',)}),
+                          }),
         ('Channels', {'fields' : ['direct',
                                   'partners'],
-                      'classes' : ('suit-tab', 'suit-tab-channel',)}),
+                      }),
         ('Technologies', {'fields' : ['saas',
                                       'appliance'],
-                          'classes' : ('suit-tab', 'suit-tab-technologies',)}),
+                          }),
         ('SWOT Analysis', {'fields' : ['strengths',
                                        'weaknesses'],
-                           'classes' : ('suit-tab', 'suit-tab-swot',)})
+                           })
     ]
     inlines = [
         GlobalMarketInline,
@@ -162,6 +168,9 @@ class CompetitorAdmin(admin.ModelAdmin):
                      'strengths',
                      'weaknesses']
 
+class ResourceFileAdmin(admin.ModelAdmin):
+    list_display = ('document_name', 'resource_category')
+    list_filter = ('resource_category',)
 
 admin.site.register(Competitor, CompetitorAdmin)
 admin.site.register(RevenueEstimate, RevenueEstimateAdmin)
@@ -175,3 +184,5 @@ admin.site.register(Review, ReviewAdmin)
 admin.site.register(Platform, PlatformAdmin)
 admin.site.register(Installation, InstallationAdmin)
 admin.site.register(Category, CategoryAdmin)
+admin.site.register(ResourceCategory, ResourceCategoryAdmin)
+admin.site.register(ResourceFile, ResourceFileAdmin)

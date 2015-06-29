@@ -104,7 +104,7 @@
                     {% for item in features|get_item:key %}<!--Fifth -->
                         {% if item.feature__name == name.name %} <!--Second If -->
                             {% if item.featureSpecs %}<!--Third If -->
-                                {{ item.featureSpecs|safe }}
+                                {{ item.featureSpecs|linebreaks }}
                             {% endif %}<!--Third If -->
                         {% endif %}<!--Second If -->
                     {% endfor %}<!--Fifth -->

@@ -203,3 +203,31 @@ class VerticalMarketShare(models.Model):
                                 decimal_places=2,
                                 max_digits=12,
                                 help_text="Enter in format: 00.00")
+
+class ResourceCategory(models.Model):
+    resource_category = models.CharField("Resource Category",
+                                         max_length=255,
+                                         blank=False)
+    notes = models.TextField("Additional Resource Category Notes",
+                             max_length=3000,
+                             blank=True)
+    class Meta:
+        verbose_name = "Sales Resource Category"
+        verbose_name_plural="Sales Resource Categories"
+    def __str__(self):
+        return self.resource_category
+
+class ResourceFile(models.Model):
+    resource_category = models.ForeignKey(ResourceCategory)
+    document_name = models.CharField("Document Name",
+                                     max_length=255,
+                                     blank=False)
+    resource_file = models.FileField("Document Upload")
+    notes = models.TextField("Notes about this file",
+                             max_length=3000,
+                             blank=True)
+    class Meta:
+        verbose_name = "Sales Resource File"
+        verbose_name_plural="Sales Resource Files"
+    def __str__(self):
+        return self.document_name

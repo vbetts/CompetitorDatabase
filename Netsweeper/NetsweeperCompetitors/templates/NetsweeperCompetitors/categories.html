@@ -96,7 +96,7 @@
                     {% for item in categories|get_item:key %}<!--Fifth -->
                         {% if item.category__name == name.name %} <!--Second If -->
                             {% if item.details %}<!--Third If -->
-                                <p>{{ item.details|safe }}</p>
+                                <p>{{ item.details|linebreaks }}</p>
                             {% endif %}<!--Third If -->
                         {% endif %}<!--Second If -->
                     {% endfor %}<!--Fifth -->

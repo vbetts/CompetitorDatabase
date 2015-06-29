@@ -15,9 +15,10 @@
 <body>
 {% block body %}
 <div align="center">
-    <p class="bg-danger text-danger">{{ message }}</p>
     <form method="POST" action="{% url 'login' %}">
         {% csrf_token %}
+        <p class="bg-danger text-danger" style="margin-top: 5%">{{ message }}</p>
+
         <div class="form-group">
             {{ form.username.errors }}<br>
             {{ form.username.label_tag }}<br>
