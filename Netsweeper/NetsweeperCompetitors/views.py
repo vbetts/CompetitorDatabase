@@ -1,44 +1,14 @@
 from django.shortcuts import render, HttpResponseRedirect
 from django.db.models import Avg
 from .models import Competitor, GlobalMarketShare, GlobalMarket, Product, CompetitorCategories, Category, \
-    VerticalMarket, VerticalMarketShare, CompanyFeatures, Feature
+    VerticalMarket, VerticalMarketShare, CompanyFeatures, Feature, AdditionalInfo
 from .forms import SelectCompetitor, CategoriesForm, FeaturesForm, VerticalMarketForm, GlobalMarketForm, \
-    ProductDetailsForm, PrintPageForm, LoginForm
+    ProductDetailsForm, PrintPageForm, LoginForm, CompetitorDocsForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 import Netsweeper.settings as settings
 
-@login_required
-def index(request):
-    return render(request, 'NetsweeperCompetitors/index.html')
 
-
-
-def login_view(request):
-    form = LoginForm(label_suffix='')
-
-    message = ''
-
-    if request.method == 'POST':
-        form = LoginForm(request.POST, label_suffix='')
-        if form.is_valid():
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password')
-            user = authenticate(username=username, password=password)
-            if user is not None:
-                if user.is_active:
-                    login(request, user)
-                    return HttpResponseRedirect(settings.LOGIN_REDIRECT_URL)
-                else:
-                    message = 'This account has been disabled.'
-            else:
-                message = 'The username and password are incorrect'
-    return render(request, 'NetsweeperCompetitors/login.html', {'form' : form,
-                                                                'message' : message})
-
-def logout_view(request):
-    logout(request)
-    return HttpResponseRedirect('/login/')
 
 #Build market share data
 def build_market_share(shares, competitors):
@@ -81,6 +51,36 @@ def build_verticalmarket_display(competitors, marketObject=False):
     return market_display
 
 ########################################################################################################################
+def login_view(request):
+    form = LoginForm(label_suffix='')
+
+    message = ''
+
+    if request.method == 'POST':
+        form = LoginForm(request.POST, label_suffix='')
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                if user.is_active:
+                    login(request, user)
+                    return HttpResponseRedirect(settings.LOGIN_REDIRECT_URL)
+                else:
+                    message = 'This account has been disabled.'
+            else:
+                message = 'The username and password are incorrect'
+    return render(request, 'NetsweeperCompetitors/login.html', {'form' : form,
+                                                                'message' : message})
+
+def logout_view(request):
+    logout(request)
+    return HttpResponseRedirect('/login/')
+
+@login_required
+def index(request):
+    return render(request, 'NetsweeperCompetitors/index.html')
+
 #Filter results on the global market template
 @login_required
 def globalmarket(request):
@@ -120,7 +120,7 @@ def globalmarket(request):
                                                                        'message': message,
                                                                        'competitor': competitor_selection,
                                                                        'market' : market_display})
-########################################################################################################################
+
 #Data for vertical markets
 @login_required
 def verticalmarket(request):
@@ -162,8 +162,6 @@ def verticalmarket(request):
                                                                          'competitor': competitor_selection,
                                                                          'market': market_display})
 
-
-########################################################################################################################
 #View and filter results on the channels template
 @login_required
 def channels(request):
@@ -197,7 +195,6 @@ def channels(request):
                                                                    'company': companyIds,
                                                                    'message': message})
 
-########################################################################################################################
 #View and filter results on the technology template
 @login_required
 def technology(request):
@@ -228,7 +225,6 @@ def technology(request):
                                                                          'company': companyIds,
                                                                          'message': message})
 
-########################################################################################################################
 #View and filter results on the revenue template
 @login_required
 def revenue(request):
@@ -264,7 +260,7 @@ def revenue(request):
                                                                   'graph': graphType,
                                                                   'company': companyIds,
                                                                   'message': message})
-########################################################################################################################
+
 #View and filter reults on the features template
 @login_required
 def features(request):
@@ -307,7 +303,6 @@ def features(request):
                                                                    'feature_names': feature_names,
                                                                    'competitor': competitor_selection})
 
-########################################################################################################################
 #View and filter esults on the categories template
 @login_required
 def categories(request):
@@ -414,3 +409,24 @@ def printpage(request):
                                                                     'showCategories': showCategories,
                                                                     'showPartners': showPartners,
                                                                     'message': message})
+
+@login_required
+def competitordocs(request):
+    files = {}
+    form = CompetitorDocsForm()
+
+    selection = Competitor.objects.filter(additionalinfo__isnull=False).distinct()
+
+    file_list_competitors = AdditionalInfo.objects.filter(competitor__in=selection)
+
+
+    for competitor in file_list_competitors:
+        files[competitor.competitor.name] = AdditionalInfo.objects.filter(competitor__name=competitor.competitor.name)
+
+    return render(request, 'NetsweeperCompetitors/competitordocs.html', {'files' : files,
+                                                                         'form' : form,
+                                                                         'file_list_competitors' : file_list_competitors})
+
+@login_required
+def salesdocs(request):
+    return render(request, 'NetsweeperCompetitors/salesdocs.html', {})

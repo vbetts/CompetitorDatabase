@@ -22,7 +22,6 @@
 <body>
 {% block body %}
 
-<h1 align="center">Netsweeper Competitors Data Analysis - Categories</h1>
 <p class="bg-danger text-danger" align="center">{{ message }}</p>
 <p class="text-center small">Please note: Only competitors with valid data will be shown.</p>
 <p class="text-center small">Printing more than 3 company comparisons at once is not recommended.</p>
@@ -31,19 +30,17 @@
 <div class="selectForm" align="center">
     <form method="POST" action="{% url 'categories' %}">
         {% csrf_token %}
-        <div class="col-md-3"></div>
-        <div class="col-md-3">
+        <div class="col-md-4 col-md-offset-2">
             {{ form.selection.errors }}<br>
             {{ form.selection.label_tag }}<br>
             {{ form.selection }}<br>
         </div>
 
-        <div class="col-md-3">
+        <div class="col-md-4">
             {{ form.categorySelect.errors }}<br>
             {{ form.categorySelect.label_tag }}<br>
             {{ form.categorySelect }}<br>
         </div>
-        <div class="col-md-3"> </div>
         <div class="text-center col-md-12">
             <button type="submit" class="btn btn-lg btn-primary" id="formButtons">Submit</button>
             <a type="button" class="btn btn-lg btn-default" href="{% url 'categories' %}" id="formButtons">Clear Selections</a>

@@ -19,63 +19,66 @@
 <body>
 {% block body %}
 
+<div class="text-center" style="padding: 3%">
+    <button class="btn btn-lg btn-primary" type="button" data-toggle="collapse" data-target="#collapseMe" aria-expanded="false" aria-controls="collapseMe">
+        Filter Results
+    </button>
+</div>
 
-<h1 align="center">Netsweeper Competitors Data Analysis - Product Details</h1>
-
-<div class="selectForm" align="center">
-    <form method="POST" action="{% url 'details' %}">
-        {% csrf_token %}
-        <div class="col-md-2"></div>
-        <div class="col-md-4">
-            {{ form.selection.errors }}<br>
-            {{ form.selection.label_tag }}<br>
-            {{ form.selection }}<br>
-        </div>
-        <div class="col-md-4">
-            {{ form.infoSelect.errors }}<br>
-            {{ form.infoSelect.label_tag }}<br>
-            {{ form.infoSelect }}<br>
-        </div>
-        <div class="col-md-2"></div>
-        <div class="text-center col-md-12">
-            <button type="submit" class="btn btn-lg btn-primary" id="formButtons">Submit</button>
-            <a type="button" class="btn btn-lg btn-default" href="{% url 'details' %}" id="formButtons">Clear Selections</a>
-        </div>
-    </form>
+<div class="collapse" id="collapseMe">
+    <div class="selectForm" align="center">
+        <form method="POST" action="{% url 'details' %}">
+            {% csrf_token %}
+            <div class="col-md-4 col-md-offset-2">
+                {{ form.selection.errors }}<br>
+                {{ form.selection.label_tag }}<br>
+                {{ form.selection }}<br>
+            </div>
+            <div class="col-md-4">
+                {{ form.infoSelect.errors }}<br>
+                {{ form.infoSelect.label_tag }}<br>
+                {{ form.infoSelect }}<br>
+            </div>
+            <div class="text-center col-md-12">
+                <button type="submit" class="btn btn-lg btn-primary" id="formButtons">Submit</button>
+                <a type="button" class="btn btn-lg btn-default" href="{% url 'details' %}" id="formButtons">Clear Selections</a>
+            </div>
+        </form>
+    </div>
 </div>
 
 
 {% if partners %}
-    {% for competitor in competitors %}
-        {% cycle '<div>' '<div>' '<div class="row">' %}
-        <div class="col-md-4">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h2 class="panel-title"><b>{{ competitor.name }} - Partnerships</b></h2>
-                </div><!--/panel header -->
-                <div class="panel-body">
-                    <table class="table">
-                        <tr>
-                            <th>Technology Partners</th>
-                            <th>Channel Partners</th>
-                            <th>OEM</th>
-                        </tr>
-                        <tr>
-                            <td>{{ competitor.technology_partners|linebreaks }}</td>
-                            <td>{{ competitor.channel_partners|linebreaks }}</td>
-                            <td>{{ competitor.oem_partners|linebreaks }}</td>
-                        </tr>
-                    </table>
-                </div><!--/Panel body -->
-                <div class="panel-footer">
+{% for competitor in competitors %}
+{% cycle '<div>' '<div>' '<div class="row">' %}
+    <div class="col-md-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h2 class="panel-title"><b>{{ competitor.name }} - Partnerships</b></h2>
+            </div><!--/panel header -->
+            <div class="panel-body">
+                <table class="table">
+                    <tr>
+                        <th>Technology Partners</th>
+                        <th>Channel Partners</th>
+                        <th>OEM</th>
+                    </tr>
+                    <tr>
+                        <td>{{ competitor.technology_partners|linebreaks }}</td>
+                        <td>{{ competitor.channel_partners|linebreaks }}</td>
+                        <td>{{ competitor.oem_partners|linebreaks }}</td>
+                    </tr>
+                </table>
+            </div><!--/Panel body -->
+            <div class="panel-footer">
 
-                </div><!--/panel-footer -->
-            </div><!--/panel -->
-        </div><!--/col -->
-    </div><!--/row -->
+            </div><!--/panel-footer -->
+        </div><!--/panel -->
+    </div><!--/col -->
+</div><!--/row -->
     {% endfor %}
 
-{% else %}
+    {% else %}
     {% for competitor in competitors %}
     {% for product in products %}
     {% if product.competitor = competitor %}
@@ -217,12 +220,12 @@
             </div><!--/panel -->
         </div><!--/col -->
     </div><!--/cycle -->
-    {% endif %}<!--if product=competitor -->
-    {% endfor %}<!--Product -->
-    {% endfor %}<!--Competitor -->
-{% endif %}<!--if partners -->
+        {% endif %}<!--if product=competitor -->
+        {% endfor %}<!--Product -->
+        {% endfor %}<!--Competitor -->
+        {% endif %}<!--if partners -->
 
-{% endblock %}
+        {% endblock %}
 </body>
 
 {% block extrajs %}

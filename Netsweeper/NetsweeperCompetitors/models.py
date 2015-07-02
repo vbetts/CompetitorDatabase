@@ -155,9 +155,13 @@ class RevenueDataSource(models.Model):
 
 class AdditionalInfo(models.Model):
     competitor = models.ForeignKey(Competitor)
+    document_name = models.CharField("Document Name", max_length=255, blank=False)
     document = models.FileField("Add extra documentation")
+    description = models.TextField("Description", max_length=3000, blank=True)
     class Meta:
         verbose_name_plural="Additional Info"
+    def __str__(self):
+        return self.competitor.name
 
 class RevenueEstimate(models.Model):
     competitor = models.ForeignKey(Competitor)
@@ -208,7 +212,7 @@ class ResourceCategory(models.Model):
     resource_category = models.CharField("Resource Category",
                                          max_length=255,
                                          blank=False)
-    notes = models.TextField("Additional Resource Category Notes",
+    description = models.TextField("Description",
                              max_length=3000,
                              blank=True)
     class Meta:
@@ -223,7 +227,7 @@ class ResourceFile(models.Model):
                                      max_length=255,
                                      blank=False)
     resource_file = models.FileField("Document Upload")
-    notes = models.TextField("Notes about this file",
+    description = models.TextField("Description",
                              max_length=3000,
                              blank=True)
     class Meta:

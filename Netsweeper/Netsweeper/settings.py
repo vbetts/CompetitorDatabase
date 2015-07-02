@@ -96,9 +96,6 @@ DATABASES = {
         'HOST' : config.get('database', 'host'),
         'PORT': config.get('database', 'port'),
         'OPTIONS': {'autocommit': True,
-
-                    #'ENGINE': 'django.db.backends.sqlite3',
-                    #'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
                     },
     }
 }
@@ -124,6 +121,6 @@ USE_TZ = True
 MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
 MEDIA_URL = '/uploads/'
 
-#STATIC_ROOT='/var/www/static'
+STATIC_ROOT='/var/www/static'
 STATIC_URL = '/static/'
 

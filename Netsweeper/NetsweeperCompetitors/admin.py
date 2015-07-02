@@ -52,6 +52,13 @@ class RevenueEstimateAdmin(admin.ModelAdmin):
         """
         return {}
 
+class AdditionalInfoAdmin(admin.ModelAdmin):
+    def get_model_perms(self, request):
+        """
+        Return empty perms dict thus hiding the model from admin index.
+        """
+        return {}
+
 class RevenueDataAdmin(admin.ModelAdmin):
     def get_model_perms(self, request):
         """
@@ -61,9 +68,9 @@ class RevenueDataAdmin(admin.ModelAdmin):
 
 class VerticalMarketAdmin(admin.ModelAdmin):
     def get_model_perms(self, request):
-        """
-        Return empty perms dict thus hiding the model from admin index.
-        """
+      #  """
+       # Return empty perms dict thus hiding the model from admin index.
+       # """
         return {}
 class GlobalMarketAdmin(admin.ModelAdmin):
     def get_model_perms(self, request):
@@ -180,3 +187,4 @@ admin.site.register(Installation, InstallationAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(ResourceCategory)
 admin.site.register(ResourceFile, ResourceFileAdmin)
+admin.site.register(AdditionalInfo, AdditionalInfoAdmin)

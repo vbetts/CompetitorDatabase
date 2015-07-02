@@ -1,5 +1,5 @@
 from django import forms
-from .models import Competitor, Feature, Category, GlobalMarket, VerticalMarket
+from .models import Competitor, Feature, Category, GlobalMarket, VerticalMarket, AdditionalInfo
 
 
 #for querying directly from Competitor table
@@ -16,7 +16,6 @@ class SelectCompetitor(forms.Form):
                                   widget=forms.Select(attrs={'class': "form-control",
                                                              'id': "graphType",}))
 
-#Show only competitors with vertical market values in the competitor selection field
 class VerticalMarketForm(forms.Form):
     GRAPH_CHOICES = ('column', 'column'), ('line', 'line'), ('scatter', 'scatter')
 
@@ -37,7 +36,6 @@ class VerticalMarketForm(forms.Form):
                                                         widget=forms.SelectMultiple(attrs={'class': "form-control",
                                                                                            'id': "marketName",}))
 
-#Show only competitors with global market values in the selection field
 class GlobalMarketForm(forms.Form):
     GRAPH_CHOICES = ('column', 'column'), ('line', 'line'), ('scatter', 'scatter')
 
@@ -56,8 +54,6 @@ class GlobalMarketForm(forms.Form):
                                                         widget=forms.SelectMultiple(attrs={'class': "form-control",
                                                                                            'id': "marketName",}))
 
-
-#Show only competitors with category data in the selection field
 class CategoriesForm(forms.Form):
     selection = forms.ModelMultipleChoiceField(queryset=Competitor.objects.distinct().filter(categories__isnull = False).order_by('name'),
                                                label="Select one or more companies to view their filtering categories",
@@ -70,7 +66,6 @@ class CategoriesForm(forms.Form):
                                                     widget=forms.SelectMultiple(attrs={'class': "form-control",
                                                                                        'id': "categoryName",}))
 
-#Show only competitors with feature data in the selection field
 class FeaturesForm(forms.Form):
     selection = forms.ModelMultipleChoiceField(queryset=Competitor.objects.distinct().filter(features__isnull=False).order_by('name'),
                                                label="Select one or more companies to view their product features",
@@ -113,3 +108,9 @@ class LoginForm(forms.Form):
                                label='Password',
                                required=True,
                                widget=forms.PasswordInput(attrs={'class': "form-control", 'required': "true", 'style': "width: 30%"}))
+
+class CompetitorDocsForm(forms.Form):
+    selection = forms.ModelMultipleChoiceField(queryset=Competitor.objects.filter(additionalinfo__isnull=False).distinct(),
+                                               label="Select a competitor to filter results",
+                                               required=True,
+                                               widget=forms.SelectMultiple(attrs={'class': "form-control", 'id': "competitorName", 'required': "true"}))

@@ -16,26 +16,42 @@
 <body>
 {% block body %}
 
-<h1 align="center">Netsweeper Competitors Data Analysis</h1>
 <p class="small" align="center">Only companies with data in at least one field will be shown by default</p>
 <p class="bg-danger text-danger" align="center">{{ message }}</p>
 
+<div class="text-center" style="padding: 3%">
+    <button class="btn btn-lg btn-primary" type="button" data-toggle="collapse" data-target="#collapseMe" aria-expanded="false" aria-controls="collapseMe">
+        Filter Results
+    </button>
+</div>
+
+
+<div class="collapse" id="collapseMe">
+
+    <div class="selectForm" align="center">
+        <form method="POST" action="{% url 'technology' %}">
+            {% csrf_token %}
+            <div class="col-md-4 col-md-offset-2">
+                {{ form.selection.errors }}<br>
+                {{ form.selection.label_tag }}<br>
+                {{ form.selection }}
+            </div>
+            <div class="col-md-4">
+                {{ form.graphType.errors }}<br>
+                {{ form.graphType.label_tag }}<br>
+                {{ form.graphType }}<br>
+            </div>
+            <div class="col-md-12">
+                <button type="submit" class="btn btn-lg btn-primary" id="formButtons">Submit</button>
+                <a type="button" class="btn btn-lg btn-default" href="{% url 'technology' %}" id="formButtons">Clear Selections</a>
+            </div>
+        </form>
+    </div>
+</div>
 
 <div id="graphContainer" style="width:100%; height:400px;"></div>
 
-<div class="selectForm" align="center">
-    <form method="POST" action="{% url 'technology' %}">
-        {% csrf_token %}
-        {{ form.selection.errors }}<br>
-        {{ form.selection.label_tag }}<br>
-        {{ form.selection }}
-        {{ form.graphType.errors }}<br>
-        {{ form.graphType.label_tag }}<br>
-        {{ form.graphType }}<br>
-        <button type="submit" class="btn btn-lg btn-primary" id="formButtons">Submit</button>
-        <a type="button" class="btn btn-lg btn-default" href="{% url 'technology' %}" id="formButtons">Clear Selections</a>
-    </form>
-</div>
+
 
 
 {% endblock %}

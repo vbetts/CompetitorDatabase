@@ -1,19 +1,15 @@
 body {
     margin: 3%;
     }
-
-label {
-
-    }
+/*
 #competitorName, #categoryName, #featureName, #marketName {
-    width: 300px;
-    height: 300px;
+    width: 15%;
 }
 
 #graphType {
-    width: 150px;
+    width: 10%;
 }
-
+*/
 #formButtons {
     margin-top: 2%;
     margin-bottom: 2%;
