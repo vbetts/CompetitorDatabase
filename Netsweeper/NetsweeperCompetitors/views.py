@@ -414,17 +414,25 @@ def printpage(request):
 def competitordocs(request):
     files = {}
     form = CompetitorDocsForm()
+    message = ''
 
     selection = Competitor.objects.filter(additionalinfo__isnull=False).distinct()
 
+    if request.method == 'POST':
+        form = CompetitorDocsForm(request.POST)
+        if form.is_valid():
+            selection = form.cleaned_data.get('selection')
+
+        else:
+            message = 'There was an error with the form. Please try again.'
+
     file_list_competitors = AdditionalInfo.objects.filter(competitor__in=selection)
-
-
     for competitor in file_list_competitors:
         files[competitor.competitor.name] = AdditionalInfo.objects.filter(competitor__name=competitor.competitor.name)
 
     return render(request, 'NetsweeperCompetitors/competitordocs.html', {'files' : files,
                                                                          'form' : form,
+                                                                         'message' : message,
                                                                          'file_list_competitors' : file_list_competitors})
 
 @login_required

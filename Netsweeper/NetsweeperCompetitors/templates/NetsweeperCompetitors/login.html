@@ -19,12 +19,12 @@
         {% csrf_token %}
         <p class="bg-danger text-danger" style="margin-top: 5%">{{ message }}</p>
 
-        <div class="form-group">
+        <div class="col-md-3 col-md-offset-3">
             {{ form.username.errors }}<br>
             {{ form.username.label_tag }}<br>
-            {{ form.username }}<br>
+            {{ form.username }}
         </div>
-        <div class="form-group">
+        <div class="col-md-3">
             {{ form.password.errors }}<br>
             {{ form.password.label_tag }}<br>
             {{ form.password }}
@@ -33,7 +33,9 @@
             <button type="submit" class="btn btn-lg btn-primary" id="formButtons">Login</button>
         </div>
     </form>
-    <small><a href="#">Forgot your password?</a></small>
+    <div class="text-center col-md-12">
+        <small><a href="#">Forgot your password?</a></small>
+    </div>
 </div>
 
 {% endblock %}

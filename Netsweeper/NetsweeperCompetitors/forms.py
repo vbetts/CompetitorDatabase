@@ -103,11 +103,11 @@ class LoginForm(forms.Form):
     username = forms.CharField(max_length=50,
                                label='Username',
                                required=True,
-                               widget=forms.TextInput(attrs={'class': "form-control", 'required': "true", 'style': "width: 30%"}))
+                               widget=forms.TextInput(attrs={'class': "form-control", 'required': "true"}))
     password = forms.CharField(max_length=50,
                                label='Password',
                                required=True,
-                               widget=forms.PasswordInput(attrs={'class': "form-control", 'required': "true", 'style': "width: 30%"}))
+                               widget=forms.PasswordInput(attrs={'class': "form-control", 'required': "true"}))
 
 class CompetitorDocsForm(forms.Form):
     selection = forms.ModelMultipleChoiceField(queryset=Competitor.objects.filter(additionalinfo__isnull=False).distinct(),
