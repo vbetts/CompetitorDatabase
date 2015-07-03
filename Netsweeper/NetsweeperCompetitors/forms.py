@@ -1,5 +1,5 @@
 from django import forms
-from .models import Competitor, Feature, Category, GlobalMarket, VerticalMarket, AdditionalInfo
+from .models import Competitor, Feature, Category, GlobalMarket, VerticalMarket, AdditionalInfo, ResourceCategory
 
 
 #for querying directly from Competitor table
@@ -112,5 +112,11 @@ class LoginForm(forms.Form):
 class CompetitorDocsForm(forms.Form):
     selection = forms.ModelMultipleChoiceField(queryset=Competitor.objects.filter(additionalinfo__isnull=False).distinct(),
                                                label="Select a competitor to filter results",
+                                               required=True,
+                                               widget=forms.SelectMultiple(attrs={'class': "form-control", 'id': "competitorName", 'required': "true"}))
+
+class SalesDocsForm(forms.Form):
+    selection = forms.ModelMultipleChoiceField(queryset=ResourceCategory.objects.all().order_by('name'),
+                                               label="Select a category to filter results",
                                                required=True,
                                                widget=forms.SelectMultiple(attrs={'class': "form-control", 'id': "competitorName", 'required': "true"}))

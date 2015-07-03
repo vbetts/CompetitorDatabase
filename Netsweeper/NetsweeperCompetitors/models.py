@@ -209,7 +209,7 @@ class VerticalMarketShare(models.Model):
                                 help_text="Enter in format: 00.00")
 
 class ResourceCategory(models.Model):
-    resource_category = models.CharField("Resource Category",
+    name = models.CharField("Resource Category",
                                          max_length=255,
                                          blank=False)
     description = models.TextField("Description",
@@ -219,7 +219,7 @@ class ResourceCategory(models.Model):
         verbose_name = "Sales Resource Category"
         verbose_name_plural="Sales Resource Categories"
     def __str__(self):
-        return self.resource_category
+        return self.name
 
 class ResourceFile(models.Model):
     resource_category = models.ForeignKey(ResourceCategory)

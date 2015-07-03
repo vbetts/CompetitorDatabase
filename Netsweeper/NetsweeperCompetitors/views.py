@@ -1,9 +1,10 @@
 from django.shortcuts import render, HttpResponseRedirect
 from django.db.models import Avg
 from .models import Competitor, GlobalMarketShare, GlobalMarket, Product, CompetitorCategories, Category, \
-    VerticalMarket, VerticalMarketShare, CompanyFeatures, Feature, AdditionalInfo
+    VerticalMarket, VerticalMarketShare, CompanyFeatures, Feature, AdditionalInfo, ResourceCategory, \
+    ResourceFile
 from .forms import SelectCompetitor, CategoriesForm, FeaturesForm, VerticalMarketForm, GlobalMarketForm, \
-    ProductDetailsForm, PrintPageForm, LoginForm, CompetitorDocsForm
+    ProductDetailsForm, PrintPageForm, LoginForm, CompetitorDocsForm, SalesDocsForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 import Netsweeper.settings as settings
@@ -84,7 +85,7 @@ def index(request):
 #Filter results on the global market template
 @login_required
 def globalmarket(request):
-    form = GlobalMarketForm(label_suffix=" ")
+    form = GlobalMarketForm(label_suffix="")
     graphType = 'column'
     message = ''
 
@@ -93,7 +94,7 @@ def globalmarket(request):
 
     #On form submission, sort companies and show only selected
     if request.method == 'POST':
-        form = GlobalMarketForm(request.POST, label_suffix=" ")
+        form = GlobalMarketForm(request.POST, label_suffix="")
         if form.is_valid():
 
             graphType = form.cleaned_data.get('graphType')
@@ -124,7 +125,7 @@ def globalmarket(request):
 #Data for vertical markets
 @login_required
 def verticalmarket(request):
-    form = VerticalMarketForm(label_suffix=" ")
+    form = VerticalMarketForm(label_suffix="")
     graphType = 'column'
     message = ''
 
@@ -133,7 +134,7 @@ def verticalmarket(request):
 
     #On form submission, filter and show only selected competitors
     if request.method == 'POST':
-        form = VerticalMarketForm(request.POST, label_suffix=" ")
+        form = VerticalMarketForm(request.POST, label_suffix="")
         if form.is_valid():
 
             graphType = form.cleaned_data.get('graphType')
@@ -167,13 +168,13 @@ def verticalmarket(request):
 def channels(request):
     channelValues = Competitor.objects.all().order_by('name').values('id', 'name', 'direct', 'partners')\
         .exclude(direct=0, partners=0)
-    form = SelectCompetitor(label_suffix=" ")
+    form = SelectCompetitor(label_suffix="")
     graphType = 'column'
     companyIds = []
     message = ''
 
     if request.method == 'POST':
-        form = SelectCompetitor(request.POST, label_suffix=" ")
+        form = SelectCompetitor(request.POST, label_suffix="")
         if form.is_valid():
             graphType = form.cleaned_data.get('graphType')
             if form.cleaned_data.get('selection').count() != 0:
@@ -199,13 +200,13 @@ def channels(request):
 @login_required
 def technology(request):
     technologies = Competitor.objects.all().order_by('name').values('id', 'name', 'appliance', 'saas').exclude(appliance=0, saas=0)
-    form = SelectCompetitor(label_suffix=" ")
+    form = SelectCompetitor(label_suffix="")
     graphType = 'column'
     companyIds = []
     message = ''
 
     if request.method == 'POST':
-        form = SelectCompetitor(request.POST, label_suffix=" ")
+        form = SelectCompetitor(request.POST, label_suffix="")
         if form.is_valid():
             graphType = form.cleaned_data.get('graphType')
             if form.cleaned_data.get('selection').count() != 0:
@@ -229,13 +230,13 @@ def technology(request):
 @login_required
 def revenue(request):
     revenue = Competitor.objects.values('id', 'name').annotate(total_rev=Avg('revenueestimate__totalRevenue'), filter_rev=Avg('revenueestimate__filteringRevenue')).exclude(total_rev__icontains= 'None', filter_rev__icontains='None').order_by('name')
-    form = SelectCompetitor(label_suffix=" ")
+    form = SelectCompetitor(label_suffix="")
     graphType = 'column'
     companyIds = []
     message = ''
 
     if request.method == 'POST':
-        form = SelectCompetitor(request.POST, label_suffix=" ")
+        form = SelectCompetitor(request.POST, label_suffix="")
         if form.is_valid():
             graphType = form.cleaned_data.get('graphType')
             if form.cleaned_data.get('selection').count() != 0:
@@ -264,7 +265,7 @@ def revenue(request):
 #View and filter reults on the features template
 @login_required
 def features(request):
-    form = FeaturesForm(label_suffix=" ")
+    form = FeaturesForm(label_suffix="")
     companyIds = []
     features = {}
     message = ''
@@ -273,7 +274,7 @@ def features(request):
 
 
     if request.method == 'POST':
-        form = FeaturesForm(request.POST, label_suffix=" ")
+        form = FeaturesForm(request.POST, label_suffix="")
         if form.is_valid():
             if form.cleaned_data.get('selection').count() != 0:
                 companyObject = form.cleaned_data.get('selection')
@@ -306,7 +307,7 @@ def features(request):
 #View and filter esults on the categories template
 @login_required
 def categories(request):
-    form = CategoriesForm(label_suffix=" ")
+    form = CategoriesForm(label_suffix="")
     companyIds = []
     categories = {}
     message = ''
@@ -314,7 +315,7 @@ def categories(request):
     category_names={}
 
     if request.method == 'POST':
-        form = CategoriesForm(request.POST, label_suffix=" ")
+        form = CategoriesForm(request.POST, label_suffix="")
         if form.is_valid():
             if form.cleaned_data.get('selection').count() != 0:
                 companyObject = form.cleaned_data.get('selection')
@@ -346,14 +347,14 @@ def categories(request):
 
 @login_required
 def details(request):
-    form = ProductDetailsForm(label_suffix=" ")
+    form = ProductDetailsForm(label_suffix="")
     competitor_selection = Competitor.objects.all()
     products = Product.objects.all()
     partners = False
     message = ''
 
     if request.method == 'POST':
-        form = ProductDetailsForm(request.POST, label_suffix=" ")
+        form = ProductDetailsForm(request.POST, label_suffix="")
         if form.is_valid():
             if form.cleaned_data.get('selection').count() != 0:
                 companyObject = form.cleaned_data.get('selection')
@@ -378,7 +379,7 @@ def details(request):
 
 @login_required
 def printpage(request):
-    form = PrintPageForm(label_suffix=" ")
+    form = PrintPageForm(label_suffix="")
     competitor_selection = ''
     products = []
     showCategories = False
@@ -386,7 +387,7 @@ def printpage(request):
     message = ''
 
     if request.method == 'POST':
-        form = PrintPageForm(request.POST, label_suffix=" ")
+        form = PrintPageForm(request.POST, label_suffix="")
         if form.is_valid():
             showCategories = form.cleaned_data.get('showCategories')
             showPartners = form.cleaned_data.get('showPartners')
@@ -413,13 +414,13 @@ def printpage(request):
 @login_required
 def competitordocs(request):
     files = {}
-    form = CompetitorDocsForm()
+    form = CompetitorDocsForm(label_suffix="")
     message = ''
 
     selection = Competitor.objects.filter(additionalinfo__isnull=False).distinct()
 
     if request.method == 'POST':
-        form = CompetitorDocsForm(request.POST)
+        form = CompetitorDocsForm(request.POST, label_suffix="")
         if form.is_valid():
             selection = form.cleaned_data.get('selection')
 
@@ -432,9 +433,25 @@ def competitordocs(request):
 
     return render(request, 'NetsweeperCompetitors/competitordocs.html', {'files' : files,
                                                                          'form' : form,
-                                                                         'message' : message,
-                                                                         'file_list_competitors' : file_list_competitors})
+                                                                         'message' : message})
 
 @login_required
 def salesdocs(request):
-    return render(request, 'NetsweeperCompetitors/salesdocs.html', {})
+    files = {}
+    form = SalesDocsForm(label_suffix="")
+    categories = ResourceCategory.objects.all().order_by('name')
+    message = ''
+
+    if request.method == 'POST':
+        form = SalesDocsForm(request.POST, label_suffix="")
+        if form.is_valid():
+            categories = form.cleaned_data.get('selection')
+        else:
+            message = 'There was an error with the form. Please try again.'
+
+    for category in categories:
+        files[category.name] = ResourceFile.objects.filter(resource_category__name = category.name)
+
+    return render(request, 'NetsweeperCompetitors/salesdocs.html', {'files' : files,
+                                                                    'form' : form,
+                                                                    'message' : message})
