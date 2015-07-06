@@ -120,3 +120,17 @@ class SalesDocsForm(forms.Form):
                                                label="Select a category to filter results",
                                                required=True,
                                                widget=forms.SelectMultiple(attrs={'class': "form-control", 'id': "competitorName", 'required': "true"}))
+
+class ChangePasswordForm(forms.Form):
+    old_password = forms.CharField(max_length=50,
+                               label='Old Password',
+                               required=True,
+                               widget=forms.PasswordInput(attrs={'class': "form-control", 'required': "true", 'id': "old_password"}))
+    new_password = forms.CharField(max_length=50,
+                               label='New Password',
+                               required=True,
+                               widget=forms.PasswordInput(attrs={'class': "form-control", 'required': "true", 'id': "new_password"}))
+    confirm_password = forms.CharField(max_length=50,
+                               label='Confirm New Password',
+                               required=True,
+                               widget=forms.PasswordInput(attrs={'class': "form-control", 'required': "true", 'id': "confirm_password"}))

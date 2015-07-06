@@ -4,7 +4,7 @@ from .models import Competitor, GlobalMarketShare, GlobalMarket, Product, Compet
     VerticalMarket, VerticalMarketShare, CompanyFeatures, Feature, AdditionalInfo, ResourceCategory, \
     ResourceFile
 from .forms import SelectCompetitor, CategoriesForm, FeaturesForm, VerticalMarketForm, GlobalMarketForm, \
-    ProductDetailsForm, PrintPageForm, LoginForm, CompetitorDocsForm, SalesDocsForm
+    ProductDetailsForm, PrintPageForm, LoginForm, CompetitorDocsForm, SalesDocsForm, ChangePasswordForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 import Netsweeper.settings as settings
@@ -458,4 +458,5 @@ def salesdocs(request):
 
 @login_required
 def changepassword(request):
-    return render(request, 'NetsweeperCompetitors/changepassword.html', {})
+    form = ChangePasswordForm(label_suffix="")
+    return render(request, 'NetsweeperCompetitors/changepassword.html', {'form' : form})
