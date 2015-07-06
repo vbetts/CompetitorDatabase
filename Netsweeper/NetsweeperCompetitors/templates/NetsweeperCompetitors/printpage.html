@@ -16,6 +16,7 @@
 </head>
 <body>
 {% block body %}
+<p class="bg-danger text-danger text-center" style="margin-top: 5%">{{ message }}</p>
 
 <div class="selectForm" align="center">
     <form method="POST" action="{% url 'printpage' %}">

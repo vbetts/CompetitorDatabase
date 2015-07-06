@@ -19,9 +19,11 @@
 </head>
 <body>
 {% block body %}
+<p class="bg-danger text-danger" align="center">{{ message }}</p>
+
 <h3 class="text-center">Additional Competitor Information</h3>
 <p class="text-center small">All documents are provided in PDF format</p>
-<p class="bg-danger text-danger" align="center">{{ message }}</p>
+
 <div class="text-center" style="padding: 3%">
     <button class="btn btn-lg btn-primary" type="button" data-toggle="collapse" data-target="#collapseMe" aria-expanded="false" aria-controls="collapseMe">
         Filter Results
