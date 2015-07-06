@@ -455,3 +455,7 @@ def salesdocs(request):
     return render(request, 'NetsweeperCompetitors/salesdocs.html', {'files' : files,
                                                                     'form' : form,
                                                                     'message' : message})
+
+@login_required
+def changepassword(request):
+    return render(request, 'NetsweeperCompetitors/changepassword.html', {})

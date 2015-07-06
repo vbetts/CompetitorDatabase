@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.admin import AdminSite
 
 from .models import Competitor, Category, ResourceCategory, ResourceFile, AdditionalInfo, Review, Platform, Installation, \
-    RevenueEstimate, Product, Feature, TargetMarket, RevenueDataSource, GlobalMarket, VerticalMarket
+    RevenueEstimate, Product, Feature, TargetMarket, RevenueDataSource, GlobalMarket, VerticalMarket, Clients, Region
 
 class MyAdminSite(AdminSite):
     site_header='Netsweeper Competitors Administration'
@@ -188,3 +188,5 @@ admin.site.register(Category, CategoryAdmin)
 admin.site.register(ResourceCategory)
 admin.site.register(ResourceFile, ResourceFileAdmin)
 admin.site.register(AdditionalInfo, AdditionalInfoAdmin)
+admin.site.register(Clients)
+admin.site.register(Region)

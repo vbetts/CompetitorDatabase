@@ -16,5 +16,6 @@ urlpatterns = [
     url(r'^details/$', views.details, name='details'),
     url(r'^print/$', views.printpage, name='printpage'),
     url(r'^competitordocs/$', views.competitordocs, name='competitordocs'),
-    url(r'^salesdocs/$', views.salesdocs, name='salesdocs')
+    url(r'^salesdocs/$', views.salesdocs, name='salesdocs'),
+    url(r'^change/$', views.changepassword, name='changepassword')
 ]

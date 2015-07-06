@@ -235,3 +235,27 @@ class ResourceFile(models.Model):
         verbose_name_plural="Sales Resource Files"
     def __str__(self):
         return self.document_name
+
+class Region(models.Model):
+    name = models.CharField("Region", max_length=255, blank=False)
+    class Meta:
+        verbose_name="Region"
+        verbose_name_plural="Regions"
+    def __str__(self):
+        return self.name
+
+class Clients(models.Model):
+    name = models.CharField("Client Name", max_length=255, blank=False)
+    region = models.ForeignKey(Region)
+    telco = models.BooleanField("Telco")
+    education = models.BooleanField("Education")
+    background = models.TextField("Client Background", max_length=3000, blank=True)
+    use_cases = models.TextField("Use Cases", max_length=5000, blank=True)
+    netsweeper_uses = models.TextField("Netsweeper Uses", max_length=5000, blank=True)
+    admin_only = models.BooleanField("This record is visible to admins only")
+    class Meta:
+        verbose_name="Client"
+        verbose_name_plural="Clients"
+    def __str__(self):
+        return self.name
+

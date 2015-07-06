@@ -63,8 +63,6 @@
                 <p>No data</p>
             {% endif %}
 
-
-
             <h4>Global Market Breakdown</h4 >
             {% if competitor.globalMarket %}
                 {% for item in competitor.globalmarketshare_set.all %}
@@ -187,8 +185,6 @@
     <div class="row" id="categories">
         <h2>{{ competitor.name }} Web Filtering Categories</h2>
         {% for item in competitor.competitorcategories_set.all %}
-
-
 
         <div class="col-xs-4">
             <p><b>{{ item.category.name}}</b></p><p>{{ item.details|safe }}</p>
