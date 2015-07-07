@@ -5,7 +5,7 @@ from .models import Competitor, GlobalMarketShare, GlobalMarket, Product, Compet
     ResourceFile
 from .forms import SelectCompetitor, CategoriesForm, FeaturesForm, VerticalMarketForm, GlobalMarketForm, \
     ProductDetailsForm, PrintPageForm, LoginForm, CompetitorDocsForm, SalesDocsForm, ChangePasswordForm
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout,  hashers
 from django.contrib.auth.decorators import login_required
 import Netsweeper.settings as settings
 
@@ -459,4 +459,30 @@ def salesdocs(request):
 @login_required
 def changepassword(request):
     form = ChangePasswordForm(label_suffix="")
-    return render(request, 'NetsweeperCompetitors/changepassword.html', {'form' : form})
+    message = ''
+    success = False
+
+    if request.method == 'POST':
+        form = ChangePasswordForm(request.POST, label_suffix="")
+        user = request.user
+        if form.is_valid():
+            old_password = form.cleaned_data.get('old_password')
+            new_password = form.cleaned_data.get('new_password')
+            confirm_password = form.cleaned_data.get('confirm_password')
+
+            if user.check_password(old_password):
+                if len(new_password) == 0 or new_password == '' or new_password == ' ':
+                    message = 'You have not entered a valid new password. Please try again'
+                elif new_password != confirm_password:
+                    message = 'New password does not match the confirmed password. Please try again'
+                elif len(new_password) > 0 and new_password == confirm_password:
+                    user.set_password(new_password)
+                    user.save()
+                    message = 'Password successfully changed'
+                    success = True
+            else:
+                message = 'You have entered your old password incorrectly. Please try again.'
+
+    return render(request, 'NetsweeperCompetitors/changepassword.html', {'form' : form,
+                                                                         'message' : message,
+                                                                         'success' : success})
