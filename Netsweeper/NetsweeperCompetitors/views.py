@@ -5,13 +5,13 @@ from .models import Competitor, GlobalMarketShare, GlobalMarket, Product, Compet
     ResourceFile
 from .forms import SelectCompetitor, CategoriesForm, FeaturesForm, VerticalMarketForm, GlobalMarketForm, \
     ProductDetailsForm, PrintPageForm, LoginForm, CompetitorDocsForm, SalesDocsForm, ChangePasswordForm
-from django.contrib.auth import authenticate, login, logout,  hashers
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 import Netsweeper.settings as settings
 
 
 
-#Build market share data
+"""Build market share data"""
 def build_market_share(shares, competitors):
     shareDict = {}
     for item in shares:
@@ -21,7 +21,7 @@ def build_market_share(shares, competitors):
             shareDict[c['id']] = 0
     return shareDict
 
-#Query global market table and return values for use in template
+"""Query global market table and return values for use in template"""
 def build_globalmarket_display(competitors, marketObject=False):
     market_display = {}
 
@@ -36,7 +36,7 @@ def build_globalmarket_display(competitors, marketObject=False):
         market_display[market] = marketshare
     return market_display
 
-#Query vertical market table and return values for use in template
+"""Query vertical market table and return values for use in template"""
 def build_verticalmarket_display(competitors, marketObject=False):
     market_display = {}
 
@@ -51,7 +51,6 @@ def build_verticalmarket_display(competitors, marketObject=False):
         market_display[market] = marketshare
     return market_display
 
-########################################################################################################################
 def login_view(request):
     form = LoginForm(label_suffix='')
 
@@ -82,7 +81,7 @@ def logout_view(request):
 def index(request):
     return render(request, 'NetsweeperCompetitors/index.html')
 
-#Filter results on the global market template
+"""Filter results on the global market template"""
 @login_required
 def globalmarket(request):
     form = GlobalMarketForm(label_suffix="")
@@ -92,13 +91,13 @@ def globalmarket(request):
     competitor_selection = Competitor.objects.distinct().filter(globalMarket__isnull=False).values('id', 'name').order_by('name')
     market_display = build_globalmarket_display(competitor_selection)
 
-    #On form submission, sort companies and show only selected
+    """On form submission, sort companies and show only selected"""
     if request.method == 'POST':
         form = GlobalMarketForm(request.POST, label_suffix="")
         if form.is_valid():
 
             graphType = form.cleaned_data.get('graphType')
-            #Retrieve values from form and pass to build_globalmarket_display()
+            """Retrieve values from form and pass to build_globalmarket_display()"""
             if form.cleaned_data.get('selection').count() != 0:
                 companyObject = form.cleaned_data.get('selection')
                 competitor_selection = Competitor.objects.filter(pk__in=companyObject).values('id', 'name').order_by('name')
@@ -122,7 +121,7 @@ def globalmarket(request):
                                                                        'competitor': competitor_selection,
                                                                        'market' : market_display})
 
-#Data for vertical markets
+"""Data for vertical markets"""
 @login_required
 def verticalmarket(request):
     form = VerticalMarketForm(label_suffix="")
@@ -132,13 +131,12 @@ def verticalmarket(request):
     competitor_selection = Competitor.objects.distinct().filter(verticalMarket__isnull=False).values('id', 'name').order_by('name')
     market_display = build_verticalmarket_display(competitor_selection)
 
-    #On form submission, filter and show only selected competitors
+    """On form submission, filter and show only selected competitors"""
     if request.method == 'POST':
         form = VerticalMarketForm(request.POST, label_suffix="")
         if form.is_valid():
 
             graphType = form.cleaned_data.get('graphType')
-
 
             if form.cleaned_data.get('selection').count() != 0:
                 companyObject = form.cleaned_data.get('selection')
@@ -163,7 +161,7 @@ def verticalmarket(request):
                                                                          'competitor': competitor_selection,
                                                                          'market': market_display})
 
-#View and filter results on the channels template
+"""View and filter results on the channels template"""
 @login_required
 def channels(request):
     channelValues = Competitor.objects.all().order_by('name').values('id', 'name', 'direct', 'partners')\
@@ -196,7 +194,7 @@ def channels(request):
                                                                    'company': companyIds,
                                                                    'message': message})
 
-#View and filter results on the technology template
+"""View and filter results on the technology template"""
 @login_required
 def technology(request):
     technologies = Competitor.objects.all().order_by('name').values('id', 'name', 'appliance', 'saas').exclude(appliance=0, saas=0)
@@ -226,7 +224,7 @@ def technology(request):
                                                                          'company': companyIds,
                                                                          'message': message})
 
-#View and filter results on the revenue template
+"""View and filter results on the revenue template"""
 @login_required
 def revenue(request):
     revenue = Competitor.objects.values('id', 'name').annotate(total_rev=Avg('revenueestimate__totalRevenue'), filter_rev=Avg('revenueestimate__filteringRevenue')).exclude(total_rev__icontains= 'None', filter_rev__icontains='None').order_by('name')
@@ -243,7 +241,7 @@ def revenue(request):
                 companyObject = form.cleaned_data.get('selection')
                 revenue = Competitor.objects.filter(pk__in= companyObject).values('id', 'name').annotate(total_rev=Avg('revenueestimate__totalRevenue'), filter_rev=Avg('revenueestimate__filteringRevenue')).order_by('name')
                 for item in revenue:
-                    if item['total_rev']== None and item['filter_rev'] == None:
+                    if item['total_rev']is None and item['filter_rev'] is None:
                         item['total_rev'] = 0
                         item['filter_rev'] = 0
                         message = 'One or more selected companies do not have any revenue data. Data will appear as a blank graph.'
@@ -262,7 +260,7 @@ def revenue(request):
                                                                   'company': companyIds,
                                                                   'message': message})
 
-#View and filter reults on the features template
+"""View and filter reults on the features template"""
 @login_required
 def features(request):
     form = FeaturesForm(label_suffix="")
@@ -304,7 +302,7 @@ def features(request):
                                                                    'feature_names': feature_names,
                                                                    'competitor': competitor_selection})
 
-#View and filter esults on the categories template
+"""View and filter esults on the categories template"""
 @login_required
 def categories(request):
     form = CategoriesForm(label_suffix="")
@@ -478,7 +476,7 @@ def changepassword(request):
                 elif len(new_password) > 0 and new_password == confirm_password:
                     user.set_password(new_password)
                     user.save()
-                    message = 'Password successfully changed'
+                    message = 'Password successfully changed.'
                     success = True
             else:
                 message = 'You have entered your old password incorrectly. Please try again.'

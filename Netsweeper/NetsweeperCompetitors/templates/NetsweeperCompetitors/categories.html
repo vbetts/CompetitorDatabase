@@ -14,7 +14,7 @@
     <meta name="author" content="">
     <title>Netsweeper Competitors</title>
     {% block extrastyles %}
-        <link media="print" href="{% static 'NetsweeperCompetitors/css/print_styles.css' %}" rel="stylesheet">
+    <link media="print" href="{% static 'NetsweeperCompetitors/css/print_styles.css' %}" rel="stylesheet">
 
     {% endblock %}
 
@@ -56,52 +56,53 @@
 </div>
 
 {% if categories %}
-    <table class="table table-striped">
-        <tr>
-            <th></th>
-            {% for key in categories %} <!--First -->
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th></th>
+        {% for key in categories %} <!--First -->
 
-            <th class="text-center" style="border-left:1px solid #d3d3d3">
+        <th class="text-center" style="border-left:1px solid #d3d3d3">
 
-                <h4>{{ key }}</h4>
+            <h4>{{ key }}</h4>
 
-            </th>
-            {% endfor %}<!--First -->
-        </tr>
+        </th>
+        {% endfor %}<!--First -->
+    </tr>
+    </thead>
 
+    <tr>
+        <th class="text-right">
+            <h4>Type</h4>
+        </th>
+        {% for key in categories %}
+        <th style="border-left:1px solid #d3d3d3">
+            <h4>Categories</h4>
+        </th>
+        {% endfor %}
+    </tr>
 
-        <tr>
-            <th class="text-right">
-                <h4>Type</h4>
-            </th>
-            {% for key in categories %}
-            <th style="border-left:1px solid #d3d3d3">
-                <h4>Categories</h4>
-            </th>
-            {% endfor %}
-        </tr>
+    {% for name in category_names %} <!-- Second -->
 
-        {% for name in category_names %} <!-- Second -->
+    <tr>
+        <th class="text-right">
+            <p>{{ name.name }}</p>
+        </th>
+        {% for key in categories %}
 
-            <tr>
-                <th class="text-right">
-                    <p>{{ name.name }}</p>
-                </th>
-                {% for key in categories %}
-
-                <td style="border-left:1px solid #d3d3d3" id="subcategories">
-                    {% for item in categories|get_item:key %}<!--Fifth -->
-                        {% if item.category__name == name.name %} <!--Second If -->
-                            {% if item.details %}<!--Third If -->
-                                <p>{{ item.details|linebreaks }}</p>
-                            {% endif %}<!--Third If -->
-                        {% endif %}<!--Second If -->
-                    {% endfor %}<!--Fifth -->
-                </td>
-                {% endfor %}<!-- Third -->
-            </tr>
-        {% endfor %}<!-- Second -->
-    </table>
+        <td style="border-left:1px solid #d3d3d3" id="subcategories">
+            {% for item in categories|get_item:key %}<!--Fifth -->
+            {% if item.category__name == name.name %} <!--Second If -->
+            {% if item.details %}<!--Third If -->
+            <p>{{ item.details|linebreaks }}</p>
+            {% endif %}<!--Third If -->
+            {% endif %}<!--Second If -->
+            {% endfor %}<!--Fifth -->
+        </td>
+        {% endfor %}<!-- Third -->
+    </tr>
+    {% endfor %}<!-- Second -->
+</table>
 {% endif %}
 {% endblock %}
 </body>

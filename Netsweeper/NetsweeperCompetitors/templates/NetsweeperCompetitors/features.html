@@ -14,6 +14,7 @@
     <meta name="author" content="">
     <title>Netsweeper Competitors</title>
     {% block extrastyles %}
+    <link rel="stylesheet" href="{% static 'NetsweeperCompetitors/css/table-fixed-header.css' %}">
     <link media="print" href="{% static 'NetsweeperCompetitors/css/print_styles.css' %}" rel="stylesheet">
     {% endblock %}
 
@@ -52,69 +53,77 @@
 </div>
 
 {% if features %}
-    <table class="table table-striped">
-        <tr>
-            <th></th>
-            {% for key in features %} <!--First -->
+<table id="mytable" class="table table-striped table-fixed-header">
+    <thead class="header">
+    <tr>
+        <th></th>
+        {% for key in features %} <!--First -->
 
-            <th class="text-center" style="border-left:1px solid #d3d3d3">
+        <th class="text-center" style="border-left:1px solid #d3d3d3">
 
-                <h4 class="titles">{{ key }}</h4>
+            <h4 class="titles">{{ key }}</h4>
 
-            </th>
-            <th id="extraCol"></th>
-            {% endfor %}<!--First -->
-        </tr>
+        </th>
+        <th id="extraCol"></th>
+        {% endfor %}<!--First -->
+    </tr>
 
 
-        <tr>
-            <th class="text-right">
-                <h4 class="titles">Feature</h4>
-            </th>
-            {% for key in features %}
+    <tr>
+        <th class="text-right">
+            <h4 class="titles">Feature</h4>
+        </th>
+        {% for key in features %}
 
-            <th class="text-center" id="supported" style="border-left:1px solid #d3d3d3">
-                <h4 class="titles">Supported</h4>
-            </th>
-            <th id="details" style="border-left:1px solid #d3d3d3">
-                <h4 class="titles" id="details">Details</h4>
-            </th>
-            {% endfor %}
-        </tr>
+        <th class="text-center" id="supported" style="border-left:1px solid #d3d3d3">
+            <h4 class="titles">Supported</h4>
+        </th>
+        <th id="details" style="border-left:1px solid #d3d3d3">
+            <h4 class="titles" id="details">Details</h4>
+        </th>
+        {% endfor %}
+    </tr>
+    </thead>
+    <tbody>
+    {% for name in feature_names %} <!-- Second -->
+    <tr>
+        <th class="text-right" id="name">
+            {{ name.name }}
+        </th>
+        {% for key in features %}
+        <td class="text-center" style="border-left:1px solid #d3d3d3">
+            {% for item in features|get_item:key %}
+            {% if item.feature__name == name.name %}
+            <span class="glyphicon glyphicon-ok" aria-hidden="true" style="color:#32CD32"></span>
+            {% endif %}<!--First If -->
+            {% endfor %}<!-- Fourth -->
+        </td>
 
-        {% for name in feature_names %} <!-- Second -->
-
-            <tr>
-                <th class="text-right" id="name">
-                    {{ name.name }}
-                </th>
-                {% for key in features %}
-                <td class="text-center" style="border-left:1px solid #d3d3d3">
-                    {% for item in features|get_item:key %}
-                        {% if item.feature__name == name.name %}
-                            <span class="glyphicon glyphicon-ok" aria-hidden="true" style="color:#32CD32"></span>
-                        {% endif %}<!--First If -->
-                    {% endfor %}<!-- Fourth -->
-                </td>
-
-                <td id="specs" style="border-left:1px solid #d3d3d3">
-                    {% for item in features|get_item:key %}<!--Fifth -->
-                        {% if item.feature__name == name.name %} <!--Second If -->
-                            {% if item.featureSpecs %}<!--Third If -->
-                                {{ item.featureSpecs|linebreaks }}
-                            {% endif %}<!--Third If -->
-                        {% endif %}<!--Second If -->
-                    {% endfor %}<!--Fifth -->
-                </td>
-                {% endfor %}<!-- Third -->
-            </tr>
-        {% endfor %}<!-- Second -->
-    </table>
+        <td id="specs" style="border-left:1px solid #d3d3d3">
+            {% for item in features|get_item:key %}<!--Fifth -->
+            {% if item.feature__name == name.name %} <!--Second If -->
+            {% if item.featureSpecs %}<!--Third If -->
+            {{ item.featureSpecs|linebreaks }}
+            {% endif %}<!--Third If -->
+            {% endif %}<!--Second If -->
+            {% endfor %}<!--Fifth -->
+        </td>
+        {% endfor %}<!-- Third -->
+    </tr>
+    {% endfor %}<!-- Second -->
+    </tbody>
+</table>
 {% endif %}
 {% endblock %}
 </body>
 
 {% block extrajs %}
+<script src="{% static 'NetsweeperCompetitors/js/table-fixed-header.js' %}"></script>
+<script language="javascript" type="text/javascript" >
+ $(document).ready(function(){
+        $('.table-fixed-header').fixedHeader();
+    });
+  </script>
 {% endblock %}
 
 </html>

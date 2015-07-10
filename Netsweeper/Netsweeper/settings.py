@@ -34,8 +34,8 @@ LOGOUT_URL = '/login/'
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-#DEBUG = False
-#ALLOWED_HOSTS = [config.get('host', 'host'), config.get('host', 'internalhost')]
+# DEBUG = False
+# ALLOWED_HOSTS = [config.get('host', 'host'), config.get('host', 'internalhost')]
 DEBUG = True
 ALLOWED_HOSTS = []
 
@@ -93,7 +93,7 @@ DATABASES = {
         'NAME': config.get('database', 'name'),
         'USER': config.get('database', 'user'),
         'PASSWORD': config.get('database', 'password'),
-        'HOST' : config.get('database', 'host'),
+        'HOST': config.get('database', 'host'),
         'PORT': config.get('database', 'port'),
         'OPTIONS': {'autocommit': True,
                     },
@@ -121,6 +121,5 @@ USE_TZ = True
 MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
 MEDIA_URL = '/uploads/'
 
-STATIC_ROOT='/var/www/static'
+STATIC_ROOT = '/var/www/static'
 STATIC_URL = '/static/'
-
