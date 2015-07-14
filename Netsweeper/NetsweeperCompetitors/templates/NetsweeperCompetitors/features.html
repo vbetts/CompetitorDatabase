@@ -7,6 +7,7 @@
 {% load staticfiles %}
 
 
+
 <head lang="en">
     <meta charset="UTF-8">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
@@ -22,9 +23,13 @@
 <body>
 {% block body %}
 
+
 <p class="bg-danger text-danger" align="center">{{ message }}</p>
 <p class="text-center small">Please note: Only competitors with valid data will be shown.</p>
-<p class="text-center small">Printing more than 5 company comparisons at once is not recommended.</p>
+<p class="text-center small">To view all competitors with particular features, select only the features.
+    To compare all features offered by specific competitors, select the competitor names. You may also select competitors
+    and specific features for comparison</p>
+<p class="text-center small"><b>Printing more than 5 company comparisons at once is not recommended.</b></p>
 
 
 <div class="selectForm" align="center">
@@ -39,7 +44,14 @@
             {{ form.featureSelect.errors }}<br>
             {{ form.featureSelect.label_tag }}<br>
             {{ form.featureSelect }}
+            {{ form.showFeatureDetails.errors }}
+            {{ form.showFeatureDetails.label_tag }}
+            {{ form.showFeatureDetails }}
         </div>
+        <div class="text-center col-md-12">
+
+        </div>
+
         <div class="text-center col-md-12">
             <button type="submit" class="btn btn-lg btn-primary" id="formButtons">Submit</button>
             <a type="button" class="btn btn-lg btn-default" href="{% url 'features' %}" id="formButtons">Clear Selections</a>
@@ -52,9 +64,37 @@
     </form>
 </div>
 
+
+{% if only_feature %}
+<table class="table table-striped">
+    <thead>
+    <tr>
+        {% for key in features %} <!--First -->
+        <th class="text-center" style="border-left:1px solid #d3d3d3">
+
+            <h4 class="titles">{{ key }}</h4>
+
+        </th>
+        {% endfor %}<!--First -->
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        {% for key in features %}
+        <td>
+            {% for competitor in features|get_item:key %}
+            <p>{{ competitor.name }}</p>
+            {% endfor %}
+        </td>
+        {% endfor %}
+    </tr>
+    </tbody>
+</table>
+
+{% else %}
 {% if features %}
-<table id="mytable" class="table table-striped table-fixed-header">
-    <thead class="header">
+<table id="mytable" class="table table-striped">
+    <thead>
     <tr>
         <th></th>
         {% for key in features %} <!--First -->
@@ -64,7 +104,9 @@
             <h4 class="titles">{{ key }}</h4>
 
         </th>
+        {% if showDetails %}
         <th id="extraCol"></th>
+        {% endif %}
         {% endfor %}<!--First -->
     </tr>
 
@@ -78,9 +120,11 @@
         <th class="text-center" id="supported" style="border-left:1px solid #d3d3d3">
             <h4 class="titles">Supported</h4>
         </th>
+        {% if showDetails %}
         <th id="details" style="border-left:1px solid #d3d3d3">
             <h4 class="titles" id="details">Details</h4>
         </th>
+        {% endif %}
         {% endfor %}
     </tr>
     </thead>
@@ -98,7 +142,7 @@
             {% endif %}<!--First If -->
             {% endfor %}<!-- Fourth -->
         </td>
-
+        {% if showDetails %}
         <td id="specs" style="border-left:1px solid #d3d3d3">
             {% for item in features|get_item:key %}<!--Fifth -->
             {% if item.feature__name == name.name %} <!--Second If -->
@@ -108,11 +152,13 @@
             {% endif %}<!--Second If -->
             {% endfor %}<!--Fifth -->
         </td>
+        {% endif %}
         {% endfor %}<!-- Third -->
     </tr>
     {% endfor %}<!-- Second -->
     </tbody>
 </table>
+{% endif %}
 {% endif %}
 {% endblock %}
 </body>

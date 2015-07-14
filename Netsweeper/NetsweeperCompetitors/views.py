@@ -164,7 +164,7 @@ def verticalmarket(request):
 """View and filter results on the channels template"""
 @login_required
 def channels(request):
-    channelValues = Competitor.objects.all().order_by('name').values('id', 'name', 'direct', 'partners')\
+    channelValues = Competitor.objects.all().order_by('name').values('id', 'name', 'direct', 'partners') \
         .exclude(direct=0, partners=0)
     form = SelectCompetitor(label_suffix="")
     graphType = 'column'
@@ -182,10 +182,10 @@ def channels(request):
         else:
             message = 'There was an error with the form. Please try again.'
             return render(request, 'NetsweeperCompetitors/channels.html', {'channelValues': channelValues,
-                                                                               'form': form,
-                                                                               'graph': graphType,
-                                                                               'company': companyIds,
-                                                                               'message': message})
+                                                                           'form': form,
+                                                                           'graph': graphType,
+                                                                           'company': companyIds,
+                                                                           'message': message})
 
 
     return render(request, 'NetsweeperCompetitors/channels.html', {'channelValues': channelValues,
@@ -219,10 +219,10 @@ def technology(request):
                                                                                  'company': companyIds,
                                                                                  'message': message})
     return render(request, 'NetsweeperCompetitors/technology.html', {'technologies': technologies,
-                                                                         'form': form,
-                                                                         'graph': graphType,
-                                                                         'company': companyIds,
-                                                                         'message': message})
+                                                                     'form': form,
+                                                                     'graph': graphType,
+                                                                     'company': companyIds,
+                                                                     'message': message})
 
 """View and filter results on the revenue template"""
 @login_required
@@ -249,10 +249,10 @@ def revenue(request):
         else:
             message = 'There was an error with the form. Please try again.'
             return render(request, 'NetsweeperCompetitors/revenue.html', {'revenue': revenue,
-                                                                                 'form': form,
-                                                                                 'graph': graphType,
-                                                                                 'company': companyIds,
-                                                                                 'message': message})
+                                                                          'form': form,
+                                                                          'graph': graphType,
+                                                                          'company': companyIds,
+                                                                          'message': message})
 
     return render(request, 'NetsweeperCompetitors/revenue.html', {'revenue': revenue,
                                                                   'form': form,
@@ -269,6 +269,9 @@ def features(request):
     message = ''
     competitor_selection = {}
     feature_names={}
+    showDetails = False
+    only_feature_selected = False
+
 
 
     if request.method == 'POST':
@@ -280,11 +283,24 @@ def features(request):
                 for c in competitor_selection:
                     features[c['name']] = CompanyFeatures.objects.filter(competitor__pk=c['id']).values('featureSpecs', 'feature__name', 'competitor')
 
+            elif form.cleaned_data.get('selection').count() == 0 and form.cleaned_data.get('feature_select') != 0:
+
+                competitor_selection = Competitor.objects.all()
+                featureObject = form.cleaned_data.get('featureSelect')
+
+                for f in featureObject:
+                    features[f.name] = Competitor.objects.filter(features=f)
+
+                only_feature_selected = True
+
             if form.cleaned_data.get('featureSelect').count() != 0:
                 featureObject = form.cleaned_data.get('featureSelect')
                 feature_names = Feature.objects.filter(pk__in=featureObject).values('name')
             elif form.cleaned_data.get('featureSelect').count() == 0:
                 feature_names = Feature.objects.values('name')
+
+            if form.cleaned_data.get('showFeatureDetails'):
+                showDetails = True
 
         else:
             message = 'There was an error with the form. Please try again.'
@@ -293,14 +309,18 @@ def features(request):
                                                                            'message': message,
                                                                            'features': features,
                                                                            'feature_names': feature_names,
-                                                                           'competitor': competitor_selection})
+                                                                           'competitor': competitor_selection,
+                                                                           'showDetails': showDetails,
+                                                                           'only_feature': only_feature_selected})
 
     return render(request, 'NetsweeperCompetitors/features.html', {'form': form,
                                                                    'company': companyIds,
                                                                    'message': message,
                                                                    'features': features,
                                                                    'feature_names': feature_names,
-                                                                   'competitor': competitor_selection})
+                                                                   'competitor': competitor_selection,
+                                                                   'showDetails': showDetails,
+                                                                   'only_feature': only_feature_selected})
 
 """View and filter esults on the categories template"""
 @login_required

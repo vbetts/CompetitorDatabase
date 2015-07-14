@@ -90,10 +90,9 @@ class FeaturesForm(forms.Form):
     selection = forms.ModelMultipleChoiceField(queryset=Competitor.objects.distinct().filter(features__isnull=False)
                                                .order_by('name'),
                                                label="Select one or more companies to view their product features",
-                                               required=True,
+                                               required=False,
                                                widget=forms.SelectMultiple(attrs={'class': "form-control",
-                                                                                  'id': "competitorName",
-                                                                                  'required': "true", }))
+                                                                                  'id': "competitorName"}))
 
     featureSelect = forms.ModelMultipleChoiceField(queryset=Feature.objects.all()
                                                    .order_by('name'),
@@ -101,6 +100,8 @@ class FeaturesForm(forms.Form):
                                                    required=False,
                                                    widget=forms.SelectMultiple(attrs={'class': "form-control",
                                                                                       'id': "featureName", }))
+    showFeatureDetails = forms.BooleanField(label="Show Feature Details",
+                                            required=False, )
 
 
 class ProductDetailsForm(forms.Form):
