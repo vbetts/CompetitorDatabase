@@ -14,18 +14,17 @@
     <meta name="author" content="">
     <title>Netsweeper Competitors</title>
     {% block extrastyles %}
-    <link media="print" href="{% static 'NetsweeperCompetitors/css/print_styles.css' %}" rel="stylesheet">
 
     {% endblock %}
 
 </head>
 <body>
 {% block body %}
-
-<p class="bg-danger text-danger" align="center">{{ message }}</p>
-<p class="text-center small">Please note: Only competitors with valid data will be shown.</p>
-<p class="text-center small">Printing more than 3 company comparisons at once is not recommended.</p>
-
+<div id="messages">
+    <p class="bg-danger text-danger" align="center">{{ message }}</p>
+    <p class="text-center small">Please note: Only competitors with valid data will be shown.</p>
+    <p class="text-center small">Printing more than 3 company comparisons at once is not recommended.</p>
+</div>
 
 <div class="selectForm" align="center">
     <form method="POST" action="{% url 'categories' %}">

@@ -16,10 +16,10 @@
 </head>
 <body>
 {% block body %}
-
-<p class="bg-danger text-danger text-center">{{ message }}</p>
-<p class="text-center small">Please note: Only competitors with valid data will be shown.<br>A percentage value of '0' indicates incomplete data.</p>
-
+<div id="messages">
+    <p class="bg-danger text-danger text-center">{{ message }}</p>
+    <p class="text-center small">Please note: Only competitors with valid data will be shown.<br>A percentage value of '0' indicates incomplete data.</p>
+</div>
 <div class="text-center" style="padding: 3%">
     <button class="btn btn-lg btn-primary" type="button" data-toggle="collapse" data-target="#collapseMe" aria-expanded="false" aria-controls="collapseMe">
         Filter Results

@@ -34,8 +34,8 @@ LOGOUT_URL = '/login/'
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = False
-# ALLOWED_HOSTS = [config.get('host', 'host'), config.get('host', 'internalhost')]
+#DEBUG = False
+#ALLOWED_HOSTS = [config.get('host', 'host'), config.get('host', 'internalhost')]
 DEBUG = True
 ALLOWED_HOSTS = []
 

@@ -16,21 +16,20 @@
     <title>Netsweeper Competitors</title>
     {% block extrastyles %}
     <link rel="stylesheet" href="{% static 'NetsweeperCompetitors/css/table-fixed-header.css' %}">
-    <link media="print" href="{% static 'NetsweeperCompetitors/css/print_styles.css' %}" rel="stylesheet">
     {% endblock %}
 
 </head>
 <body>
 {% block body %}
 
-
-<p class="bg-danger text-danger" align="center">{{ message }}</p>
-<p class="text-center small">Please note: Only competitors with valid data will be shown.</p>
-<p class="text-center small">To view all competitors with particular features, select only the features.
-    To compare all features offered by specific competitors, select the competitor names. You may also select competitors
-    and specific features for comparison</p>
-<p class="text-center small"><b>Printing more than 5 company comparisons at once is not recommended.</b></p>
-
+<div id="messages">
+    <p class="bg-danger text-danger" align="center">{{ message }}</p>
+    <p class="text-center small">Please note: Only competitors with valid data will be shown.</p>
+    <p class="text-center small">To view all competitors with particular features, select only the features.
+        To compare all features offered by specific competitors, select the competitor names. You may also select competitors
+        and specific features for comparison</p>
+    <p class="text-center small"><b>Printing more than 5 company comparisons at once is not recommended.</b></p>
+</div>
 
 <div class="selectForm" align="center">
     <form method="POST" action="{% url 'features' %}">

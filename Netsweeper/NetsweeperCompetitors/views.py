@@ -272,8 +272,6 @@ def features(request):
     showDetails = False
     only_feature_selected = False
 
-
-
     if request.method == 'POST':
         form = FeaturesForm(request.POST, label_suffix="")
         if form.is_valid():
@@ -285,7 +283,7 @@ def features(request):
 
             elif form.cleaned_data.get('selection').count() == 0 and form.cleaned_data.get('feature_select') != 0:
 
-                competitor_selection = Competitor.objects.all()
+                competitor_selection = Competitor.objects.all().order_by('name')
                 featureObject = form.cleaned_data.get('featureSelect')
 
                 for f in featureObject:

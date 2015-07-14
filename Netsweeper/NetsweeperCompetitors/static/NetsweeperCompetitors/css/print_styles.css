@@ -2,9 +2,10 @@ form { display: none; }
 img { display: none; }
 
 body { width: 600px;
-    margin-top: 0;
+    margin: 0px 0px 0px 0px;
     padding-top: 0; }
 
+#messages { display: none; }
 
 h1 { font-size: 16pt; }
 h2 { font-size: 14pt; }
@@ -28,6 +29,8 @@ td th { border-right:1px solid #d3d3d3; }
 
 #features { page-break-after: always; }
 #categories { page-break-after: always; }
+
+
 
 pre { padding: 0 !important;
         font-size: 10pt;}
