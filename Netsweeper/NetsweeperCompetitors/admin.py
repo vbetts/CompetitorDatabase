@@ -56,6 +56,9 @@ class FileInline(admin.TabularInline):
     extra = 1
 
 
+# Functions from here until CompetitorAdmin remove the specified model from the main menu on the admin site
+# Users may still add and edit fields in the model through related models Clients, Competitors and Sales Resource Files
+# Simplifies admin page for users
 class RevenueEstimateAdmin(admin.ModelAdmin):
     def get_model_perms(self, request):
         """
@@ -152,6 +155,23 @@ class CategoryAdmin(admin.ModelAdmin):
         return {}
 
 
+class ResourceCategoriesAdmin(admin.ModelAdmin):
+    def get_model_perms(self, request):
+        """
+        Return empty perms dict thus hiding the model from admin index.
+        """
+        return {}
+
+
+class RegionAdmin(admin.ModelAdmin):
+    def get_model_perms(self, request):
+        """
+        Return empty perms dict thus hiding the model from admin index.
+        """
+        return {}
+
+
+# Set fieldsets and inlines for create/edit competitor
 class CompetitorAdmin(admin.ModelAdmin):
     fieldsets = [
         ('General Company Information', {'fields': ['name',
@@ -201,10 +221,12 @@ class CompetitorAdmin(admin.ModelAdmin):
                      'weaknesses']
 
 
+# Set fieldsets and inlines for create/edit Resource File
 class ResourceFileAdmin(admin.ModelAdmin):
     list_display = ('document_name', 'resource_category')
     list_filter = ('resource_category',)
 
+# Register models to the admin site
 admin.site.register(Competitor, CompetitorAdmin)
 admin.site.register(RevenueEstimate, RevenueEstimateAdmin)
 admin.site.register(RevenueDataSource, RevenueDataAdmin)
@@ -217,8 +239,8 @@ admin.site.register(Review, ReviewAdmin)
 admin.site.register(Platform, PlatformAdmin)
 admin.site.register(Installation, InstallationAdmin)
 admin.site.register(Category, CategoryAdmin)
-admin.site.register(ResourceCategory)
+admin.site.register(ResourceCategory, ResourceCategoriesAdmin)
 admin.site.register(ResourceFile, ResourceFileAdmin)
 admin.site.register(AdditionalInfo, AdditionalInfoAdmin)
 admin.site.register(Clients)
-admin.site.register(Region)
+admin.site.register(Region, RegionAdmin)

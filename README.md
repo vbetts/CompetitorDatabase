@@ -1,2 +1,2 @@
-# CompetitorDatabase
-A Django web app for comparing and visualizing competitor data
+# Sales Portal App
+A Django web app for storing sales resources
